@@ -1,0 +1,6 @@
+https://developers.google.com/youtube/v3/docs/search/list
+https://developers.google.com/youtube/v3/docs/search
+
+https://developers.google.com/resources/api-libraries/documentation/youtube/v3/java/latest/
+
+https://developers.google.com/apis-explorer/#p/youtube/v3/

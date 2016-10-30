@@ -1,0 +1,3 @@
+https://www.sitepoint.com/using-the-youtube-api-to-embed-video-in-an-android-app/
+
+https://code.tutsplus.com/tutorials/create-a-youtube-client-on-android--cms-22858
