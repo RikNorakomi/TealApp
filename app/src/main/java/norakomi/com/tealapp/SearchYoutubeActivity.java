@@ -14,7 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.api.services.youtube.YouTube;
 
 import java.util.List;
 
@@ -34,27 +33,6 @@ import norakomi.com.tealapp.data.service.YoutubeService;
 public class SearchYoutubeActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
 
-    /**
-     * Base url for youtube queries. Some common query params:
-     * q:           The q parameter specifies the query term to search for. Your request can also use the Boolean NOT (-) and OR (|) operators to exclude videos or to find videos that are associated with one of several search terms.
-     * maxResults:  The maxResults parameter specifies the maximum number of items that should be returned in the result
-     *              set. Acceptable values are 0 to 50, inclusive. The default value is 5.
-     * order:       date, rating, relevance, title, videoCount, viewCount
-     * pageToken:   The pageToken parameter identifies a specific page in the result set that should be returned. In an API response, the nextPageToken and prevPageToken properties identify other pages that could be retrieved.
-     */
-
-
-    /**
-     * Define a global variable that specifies the maximum number of videos
-     * that an API response can contain.
-     */
-    private static final long NUMBER_OF_VIDEOS_RETURNED = 50;
-
-    /**
-     * Define a global instance of a Youtube object, which will be used
-     * to make YouTube Data API requests.
-     */
-    private static YouTube youtube;
     private List<VideoItem> searchResults;
     private Handler handler;
     private ListView videosFound;
@@ -79,7 +57,7 @@ public class SearchYoutubeActivity extends AppCompatActivity {
         new Thread() {
             public void run() {
 
-                YoutubeService youtubeService = new YoutubeService(SearchYoutubeActivity.this);
+                YoutubeService youtubeService = new YoutubeService();
                 searchResults = youtubeService.search(keywords);
                 handler.post(new Runnable() {
                     public void run() {

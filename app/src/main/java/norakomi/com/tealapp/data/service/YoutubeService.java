@@ -1,6 +1,5 @@
 package norakomi.com.tealapp.data.service;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.google.api.client.http.HttpRequest;
@@ -18,6 +17,7 @@ import java.util.List;
 import config.Config;
 import norakomi.com.tealapp.R;
 import norakomi.com.tealapp.Utils.Logging;
+import norakomi.com.tealapp.Utils.AppContext;
 import norakomi.com.tealapp.data.model.VideoItem;
 
 /**
@@ -25,26 +25,43 @@ import norakomi.com.tealapp.data.model.VideoItem;
  */
 public class YoutubeService {
 
+    /**
+     * Base url for youtube queries. Some common query params:
+     * q:           The q parameter specifies the query term to search for. Your request can also use the Boolean NOT (-) and OR (|) operators to exclude videos or to find videos that are associated with one of several search terms.
+     * maxResults:  The maxResults parameter specifies the maximum number of items that should be returned in the result
+     * set. Acceptable values are 0 to 50, inclusive. The default value is 5.
+     * order:       date, rating, relevance, title, videoCount, viewCount
+     * pageToken:   The pageToken parameter identifies a specific page in the result set that should be returned. In an API response, the nextPageToken and prevPageToken properties identify other pages that could be retrieved.
+     */
+
     private final String TAG = getClass().getSimpleName();
 
-    private YouTube youtube;
     private YouTube.Search.List query;
 
     // Your developer key goes here
     public static final String YOUTUBE_API_KEY = Config.TEAL_APP_YOUTUBE_API_KEY;
-    private final long maxResults = 50;
+    private static final long maxResults = 50;
 
-    public YoutubeService(Context context) {
-        youtube = new YouTube.Builder(
+    private static YoutubeService instance;
+
+    public static YoutubeService getInstance() {
+        if (instance == null) {
+            instance = new YoutubeService();
+        }
+        return instance;
+    }
+
+    public YoutubeService() {
+        YouTube youtube = new YouTube.Builder(
                 new NetHttpTransport(),
                 new JacksonFactory(),
                 new HttpRequestInitializer() {
                     @Override
                     public void initialize(HttpRequest hr) throws IOException {
-                        Logging.log(TAG, "YoutubeService init: HttpRequest = " +hr.toString());
+                        Logging.log(TAG, "YoutubeService init: HttpRequest = " + hr.toString());
                     }
                 })
-                .setApplicationName(context.getString(R.string.app_name)).build();
+                .setApplicationName(AppContext.getAppContext().getString(R.string.app_name)).build();
 
         try {
             query = youtube.search().list("id,snippet");
