@@ -7,7 +7,6 @@ import android.util.Log;
  */
 public class Logging {
     private final static String LOG_PREFIX = "Norakomi: ";
-    private final static String TAG = Logging.class.getSimpleName();
 
     private Logging() {
     }
