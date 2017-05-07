@@ -1,4 +1,4 @@
-package config;
+package norakomi.com.tealapp.Utils;
 
 /**
  * Created by Rik van Velzen, on 30-10-2016.

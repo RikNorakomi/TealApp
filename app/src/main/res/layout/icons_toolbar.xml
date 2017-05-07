@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:paddingEnd="16dp"
+              android:paddingStart="16dp">
+
+    <!-- Comments container-->
+    <LinearLayout
+        android:id="@+id/comments_container"
+        style="@style/icons_toolbar_style"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_comment_black_24dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1K"
+            android:textSize="@dimen/text_size_icon_inactive"/>
+
+    </LinearLayout>
+
+
+    <!-- Thumb down container-->
+    <LinearLayout
+        android:id="@+id/thumb_down_container"
+        style="@style/icons_toolbar_style"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_thumb_down_black_24dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="668"
+            android:textSize="@dimen/text_size_icon_inactive"/>
+    </LinearLayout>
+
+
+    <!-- Thumb up container-->
+    <LinearLayout
+        android:id="@+id/thumb_up_container"
+        style="@style/icons_toolbar_style"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_thumb_up_black_24dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="23K"
+            android:textSize="@dimen/text_size_icon_inactive"/>
+    </LinearLayout>
+
+
+    <!-- Share container-->
+    <LinearLayout
+        android:id="@+id/share_container"
+        style="@style/icons_toolbar_style"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_share_black_24dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/share"
+            android:textSize="@dimen/text_size_icon_inactive"/>
+
+    </LinearLayout>
+
+</LinearLayout>

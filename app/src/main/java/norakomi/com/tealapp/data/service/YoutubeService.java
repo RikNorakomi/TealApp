@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import config.Config;
+import norakomi.com.tealapp.Utils.Config;
 import norakomi.com.tealapp.R;
 import norakomi.com.tealapp.Utils.Logging;
 import norakomi.com.tealapp.Utils.AppContext;

@@ -5,4 +5,8 @@
     <string name="player_error">Error initializing YouTube player</string>
     <string name="seek_to">Jump To</string>
     <string name="seek_to_hint">Seconds</string>
+
+    <string name="up_next">Up next</string>
+    <string name="autoplay">Autoplay</string>
+    <string name="share">Share</string>
 </resources>
