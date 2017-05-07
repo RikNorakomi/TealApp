@@ -1,12 +1,12 @@
 package norakomi.com.tealapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -31,8 +31,16 @@ import norakomi.com.tealapp.data.model.VideoItem;
 public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHolder> {
 
     private final String TAG = getClass().getSimpleName();
+    private final IVideoClickedCallback mVideoClickedCallback;
+
+    // Allows to remember the last item shown on screen
+    private int lastPosition = -1;
 
     private List<VideoItem> mContent = new ArrayList<>();
+
+    public OverviewAdapter(IVideoClickedCallback callback) {
+        mVideoClickedCallback = callback;
+    }
 
     public void setContent(List<VideoItem> content) {
         mContent.clear();
@@ -50,6 +58,25 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         VideoItem item = mContent.get(position);
         holder.setView(item);
+
+        // Here you apply the animation when the view is bound
+//        setAnimation(holder.itemView, position);
+    }
+
+    /**
+     * Here is the key method to apply the animation
+     */
+    private void setAnimation(View viewToAnimate, int position)
+    {
+        // If the bound view wasn't previously displayed on screen, it's animated
+        if (position > lastPosition)
+        {
+            Animation animation = AnimationUtils.
+                    loadAnimation(viewToAnimate.getContext(),
+                            android.R.anim.slide_in_left);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position;
+        }
     }
 
 
@@ -78,19 +105,9 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
             thumbnail = (ImageView) itemView.findViewById(R.id.video_thumbnail);
             title = (TextView) itemView.findViewById(R.id.video_title);
             menuIcon = (TextView) itemView.findViewById(R.id.menu_icon);
-//            description = (TextView) itemView.findViewById(R.id.video_description);
-            menuIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    showPopupMenu(view.getContext());
-                }
-            });
-            thumbnail.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startVideoPlayerActivity(view.getContext());
-                }
-            });
+            menuIcon.setOnClickListener(view -> showPopupMenu(view.getContext()));
+
+            thumbnail.setOnClickListener(view -> mVideoClickedCallback.videoClickedWithId(item.getId()));
         }
 
         public void setView(VideoItem item) {
@@ -100,7 +117,6 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
                     centerCrop().
                     into(thumbnail);
             title.setText(item.getTitle());
-//            description.setText(item.getDescription());
         }
 
         private void showPopupMenu(Context context) {
@@ -110,32 +126,24 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
             //inflating menu from xml resource
             popup.inflate(R.menu.options_menu);
             //adding click listener
-            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    Logging.logError(TAG, "menu item clicked: " + item.toString());
-                    switch (item.getItemId()) {
-                        case R.id.navigation_drawer_item1:
-                            //handle menu1 click
-                            break;
-                        case R.id.navigation_drawer_item2:
-                            //handle menu2 click
-                            break;
-                        case R.id.navigation_drawer_item3:
-                            //handle menu3 click
-                            break;
-                    }
-                    return false;
+            popup.setOnMenuItemClickListener(item1 -> {
+                Logging.logError(TAG, "menu item clicked: " + item1.toString());
+                switch (item1.getItemId()) {
+                    case R.id.navigation_drawer_item1:
+                        //handle menu1 click
+                        break;
+                    case R.id.navigation_drawer_item2:
+                        //handle menu2 click
+                        break;
+                    case R.id.navigation_drawer_item3:
+                        //handle menu3 click
+                        break;
                 }
+                return false;
             });
             //displaying the popup
             popup.show();
         }
 
-        private void startVideoPlayerActivity(Context context) {
-            Intent intent = new Intent(context, PlayerActivity.class);
-            intent.putExtra("VIDEO_ID", item.getId());
-            context.startActivity(intent);
-        }
     }
 }

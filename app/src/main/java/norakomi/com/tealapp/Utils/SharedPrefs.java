@@ -32,7 +32,7 @@ public class SharedPrefs {
     }
 
     public boolean isAutoplayEnabled(){
-        return sharedPrefs.getBoolean(AUTOPLAY_ENABLED, false);
+        return sharedPrefs.getBoolean(AUTOPLAY_ENABLED, true);
     }
 
     public void setAutoplayEnabled(boolean enabled){

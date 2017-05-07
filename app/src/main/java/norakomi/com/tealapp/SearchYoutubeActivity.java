@@ -1,18 +1,18 @@
 package norakomi.com.tealapp;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.List;
 
-import norakomi.com.tealapp.Utils.Logging;
+import norakomi.com.tealapp.data.DataManager;
+import norakomi.com.tealapp.data.IDataManagerCallback;
 import norakomi.com.tealapp.data.model.VideoItem;
-import norakomi.com.tealapp.data.service.YoutubeService;
+
+import static norakomi.com.tealapp.Utils.Config.YOUTUBE_SEARCH_STRING;
 
 /**
  * Created by Rik van Velzen, on 30-10-2016.
@@ -23,12 +23,10 @@ import norakomi.com.tealapp.data.service.YoutubeService;
  * https://developers.google.com/youtube/v3/docs/search/list
  */
 
-public class SearchYoutubeActivity extends AppCompatActivity {
+public class SearchYoutubeActivity extends AppCompatActivity implements IVideoClickedCallback {
+
     private final String TAG = getClass().getSimpleName();
 
-    private Handler handler;
-    private ListView videosFound;
-    private String searchString;
     private RecyclerView recycler;
     private OverviewAdapter adapter;
 
@@ -36,39 +34,37 @@ public class SearchYoutubeActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_youtube);
-        Logging.log(TAG, "in onCreate()");
 
-        handler = new Handler();
-        searchString = "teal swan";
+        setupViews();
+        getVideos();
+    }
 
-        // setup views
-        adapter = new OverviewAdapter();
-        recycler = (RecyclerView) findViewById(R.id.recycler);
+    private void setupViews() {
+        adapter = new OverviewAdapter(this);
+        recycler = (RecyclerView) findViewById(R.id.recycler_overview_activity);
         recycler.setAdapter(adapter);
-
-        TextView searchQuery = (TextView) findViewById(R.id.activity_search_youtube_search_query);
-        searchQuery.setText("Search query: " + searchString);
-
-        searchOnYoutube(searchString);
     }
 
-    private void searchOnYoutube(final String keywords) {
-        new Thread() {
-            public void run() {
-
-                final YoutubeService youtubeService = new YoutubeService();
-                final List<VideoItem> result = youtubeService.search(keywords);
-                handler.post(new Runnable() {
-                    public void run() {
-                        updateVideosFound(result);
-                    }
-                });
+    private void getVideos() {
+        DataManager.getInstance().getVideos(YOUTUBE_SEARCH_STRING, new IDataManagerCallback() {
+            @Override
+            public void onResult(final List<VideoItem> result) {
+                adapter.setContent(result);
             }
-        }.start();
+
+            @Override
+            public void onError(Exception e) {
+                // TODO: 8-5-2017 handle error
+            }
+        });
     }
 
-    private void updateVideosFound(List<VideoItem> searchResults) {
-        adapter.setContent(searchResults);
-    }
 
+    @Override
+    public void videoClickedWithId(String videoId) {
+        Intent intent = new Intent(this, PlayerActivity.class);
+        intent.putExtra(PlayerActivity.VIDEO_ID, videoId);
+        startActivity(intent);
+    }
 }
+

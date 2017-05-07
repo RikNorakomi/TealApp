@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
@@ -10,87 +11,94 @@
         android:layout_height="wrap_content"
         android:minHeight="150dp"/>
 
-    <RelativeLayout
-        android:clickable="true"
-        android:background="?android:attr/selectableItemBackground"
-        android:id="@+id/title_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingEnd="16dp"
-        android:paddingStart="16dp"
-        android:paddingBottom="8dp">
-
-        <ImageView
-            android:id="@+id/expand_collapse_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/ic_arrow_drop_down_black_24dp"/>
-
-        <TextView
-            android:id="@+id/title_text"
+        <RelativeLayout
+            android:id="@+id/title_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/expand_collapse_icon"
-            android:maxLines="2"
-            android:text="Test text: Inner worlds, outer worlds - part 1 - akasha"
-            android:textColor="@color/textColorTitle"
-            android:textSize="@dimen/text_size_title"/>
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:paddingBottom="8dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/expand_collapse_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_arrow_drop_down_black_24dp"/>
+
+            <TextView
+                android:id="@+id/title_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/expand_collapse_icon"
+                android:maxLines="2"
+                android:text="Test text: Inner worlds, outer worlds - part 1 - akasha"
+                android:textColor="@color/textColorTitle"
+                android:textSize="@dimen/text_size_title"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title_text"
+                android:maxLines="1"
+                android:text="2,145,675 views"
+                android:textColor="@color/textColorSecondary"
+                android:textSize="@dimen/text_size_subheading"/>
+
+        </RelativeLayout>
+
+        <!-- Action icons toolbar -->
+        <include
+            android:id="@+id/icons_container"
+            layout="@layout/icons_toolbar"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dividerLine"/>
+
+
+        <RelativeLayout
+            android:id="@+id/up_next_autoplay_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/title_text"
-            android:maxLines="1"
-            android:text="2,145,675 views"
-            android:textColor="@color/textColorSecondary"
-            android:textSize="@dimen/text_size_subheading"/>
+            android:padding="16dp">
 
-    </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/up_next"
+                android:textColor="@color/textColorSecondary"
+                android:textSize="@dimen/text_size_secondary"/>
 
-    <!-- Action icons toolbar -->
-    <include
-        android:id="@+id/icons_container"
-        layout="@layout/icons_toolbar"/>
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/autoplay_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"/>
 
-    <View
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
+                android:layout_toLeftOf="@+id/autoplay_switch"
+                android:text="@string/autoplay"
+                android:textColor="@color/textColorSecondary"
+                android:textSize="@dimen/text_size_secondary"/>
+        </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_player_activity"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/dividerLine"/>
+        android:layout_height="match_parent"
+        app:layoutManager="LinearLayoutManager"/>
 
-
-    <RelativeLayout
-        android:id="@+id/up_next_autoplay_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="@string/up_next"
-            android:textColor="@color/textColorSecondary"
-            android:textSize="@dimen/text_size_secondary"/>
-
-        <android.support.v7.widget.SwitchCompat
-            android:id="@+id/autoplay_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
-            android:layout_toLeftOf="@+id/autoplay_switch"
-            android:text="@string/autoplay"
-            android:textColor="@color/textColorSecondary"
-            android:textSize="@dimen/text_size_secondary"/>
-    </RelativeLayout>
 
 </LinearLayout>
