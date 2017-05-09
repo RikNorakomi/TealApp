@@ -5,6 +5,16 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
+    <norakomi.com.tealapp.NavigationBar
+        android:id="@+id/overview_navigation_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/navigation_bar_height"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/dividerLineDark"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_overview_activity"
         android:layout_width="match_parent"

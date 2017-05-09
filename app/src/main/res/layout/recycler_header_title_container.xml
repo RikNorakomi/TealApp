@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/title_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:paddingBottom="8dp"
+    android:paddingEnd="16dp"
+    android:paddingStart="16dp"
+    android:paddingTop="16dp"
+    tools:showIn="@layout/recycler_header">
+
+    <ImageView
+        android:id="@+id/expand_collapse_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_arrow_drop_down_black_24dp"/>
+
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/expand_collapse_icon"
+        android:maxLines="2"
+        android:text="Test text: Inner worlds, outer worlds - part 1 - akasha"
+        android:textColor="@color/textColorTitle"
+        android:textSize="@dimen/text_size_title"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_text"
+        android:maxLines="1"
+        android:text="2,145,675 views"
+        android:textColor="@color/textColorSecondary"
+        android:textSize="@dimen/text_size_subheading"/>
+
+</RelativeLayout>

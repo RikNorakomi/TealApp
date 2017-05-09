@@ -6,12 +6,18 @@
     <!-- text sizes -->
     <dimen name="text_size_title">@dimen/text_size_primary</dimen>
     <dimen name="text_size_subheading">@dimen/text_size_secondary</dimen>
+    <dimen name="text_size_title_list">@dimen/text_size_primary_list</dimen>
 
     <dimen name="text_size_primary">20sp</dimen>
     <dimen name="text_size_secondary">16sp</dimen>
 
+    <dimen name="text_size_primary_list">14sp</dimen>
+    <dimen name="text_size_secondary_list">13sp</dimen>
+
     <!-- https://material.io/guidelines/components/bottom-navigation.html#bottom-navigation-specs -->
     <dimen name="text_size_icon_inactive">12sp</dimen>
     <dimen name="text_size_icon_active">14sp</dimen>
+
+    <dimen name="navigation_bar_height">48dp</dimen>
 
 </resources>

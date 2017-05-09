@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TealApp</string>
+    <string name="app_name">The Teal Swan Resources</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="player_error">Error initializing YouTube player</string>

@@ -40,4 +40,9 @@ public class SharedPrefs {
         prefsEditor.apply();
     }
 
+    public void toggleAutoplay(){
+        prefsEditor.putBoolean(AUTOPLAY_ENABLED, !isAutoplayEnabled());
+        prefsEditor.apply();
+    }
+
 }

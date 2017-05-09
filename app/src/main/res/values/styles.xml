@@ -4,6 +4,12 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+
+        <!-- remove shadow below action bar -->
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- Support library compatibility -->
+        <item name="elevation">0dp</item>
+
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -14,7 +20,7 @@
 
     </style>
 
-    <style name="icons_toolbar_style">
+    <style name="recycler_header_icons_toolbar_style">
         <!-- https://material.io/guidelines/components/bottom-navigation.html#bottom-navigation-specs -->
         <!-- top should be 6dp in active view, 8dp in inactive view -->
         <item name="android:paddingTop">6dp</item>
@@ -27,6 +33,19 @@
         <item name="android:paddingBottom">10dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="navigation_toolbar_icons_style">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
     </style>
 
 

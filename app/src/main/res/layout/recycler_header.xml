@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- Title section -->
+    <include layout="@layout/recycler_header_title_container"/>
+
+    <!-- Icons section -->
+    <include
+        android:id="@+id/icons_toolbar"
+        layout="@layout/recycler_header_icons_toolbar"/>
+
+    <!-- Divider line -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/dividerLine"/>
+
+    <!-- Autoplay toggle section-->
+    <include layout="@layout/recycler_header_up_next_autoplay_container"/>
+
+</LinearLayout>

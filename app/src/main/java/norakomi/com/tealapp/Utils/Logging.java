@@ -1,5 +1,6 @@
 package norakomi.com.tealapp.Utils;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 /**
@@ -11,11 +12,23 @@ public class Logging {
     private Logging() {
     }
 
-    public static void log(String classTag, String message) {
+    public static void log(
+            @NonNull String classTag,
+            @NonNull String message) {
         Log.v(LOG_PREFIX + classTag, message);
     }
 
-    public static void logError(String classTag, String message) {
+    public static void logError(
+            @NonNull String classTag,
+            @NonNull String message) {
         Log.e(LOG_PREFIX + classTag, message);
+    }
+
+    public static void logError(
+            @NonNull String classTag,
+            @NonNull String message,
+            @NonNull Exception e) {
+        String exceptionMessage = " exceptionToString = " + e.toString();
+        Log.e(LOG_PREFIX + classTag, message + exceptionMessage);
     }
 }

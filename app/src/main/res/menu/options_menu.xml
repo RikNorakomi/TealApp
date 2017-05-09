@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/navigation_drawer_item1"
-        android:title="Item 1" />
+        android:id="@+id/options_menu_not_interested"
+        android:title="Not interested" />
     <item
-        android:id="@+id/navigation_drawer_item2"
-        android:title="Item 2" />
+        android:id="@+id/options_menu_watch_later"
+        android:title="Save to watch later" />
 
     <item
-        android:id="@+id/navigation_drawer_item3"
-        android:title="Item 3"/>
+        android:id="@+id/options_menu_share"
+        android:title="Share"/>
 </menu>

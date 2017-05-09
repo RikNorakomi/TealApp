@@ -11,11 +11,14 @@
 
     <!-- http://stackoverflow.com/questions/27839216/android-material-design-divider-color -->
     <color name="dividerLine">#1F000000</color>
+    <color name="dividerLineDark">#2f000000</color>
     <color name="switchButtonHighlighted">@color/deepPurpleA100</color>
 
     <color name="textColorTitle">@color/textColorPrimary</color>
     <color name="textColorPrimary">#FF000000</color>
     <color name="textColorSecondary">#77000000</color>
+
     <color name="fillColorIcons">#66000000</color>
+    <color name="fillColorIconsNavigationBar">#ffffffff</color>
 
 </resources>

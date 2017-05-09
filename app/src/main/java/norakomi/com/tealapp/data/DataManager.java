@@ -2,7 +2,9 @@ package norakomi.com.tealapp.data;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,6 +27,7 @@ public class DataManager {
 
     private static final DataManager ourInstance = new DataManager();
     private final HashMap<String, List<VideoItem>> cachedQueries = new HashMap();
+    private ArrayList<VideoItem> cachedResults = new ArrayList<>();
 
     public static DataManager getInstance() {
         return ourInstance;
@@ -58,13 +61,31 @@ public class DataManager {
                         Handler handler = new Handler(Looper.getMainLooper());
                         handler.post(() -> iDataManagerCallback.onResult(result));
 
-                        // cache search query
+                        // cache result & search query
                         cachedQueries.put(searchQuery, result);
+                        cachedResults = new ArrayList<>(result);
                     }
                 }.start();
             } catch (Exception e) {
                 iDataManagerCallback.onError(e);
             }
         }
+    }
+
+    /**
+     * This method queries the cached search query results for requested id
+     *
+     * @param videoId
+     * @return video item from cache or null if video id not found
+     */
+    @Nullable
+    public VideoItem getVideoFromId(String videoId) {
+        for (VideoItem video : cachedResults) {
+            if (video.getId().equals(videoId)) {
+                return video;
+            }
+        }
+
+        return null;
     }
 }

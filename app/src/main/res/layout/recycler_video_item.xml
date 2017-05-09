@@ -48,11 +48,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:layout_marginRight="-8dp"
             android:layout_toLeftOf="@id/menu_icon"
-            android:maxLines="3"
-            android:text="test: The Ultime Life Hack (The secret to Understanding the mechanism of"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:maxLines="4"
+            android:text="The Ultime Life Hack (The secret to Understanding the mechanism of"
+            android:textSize="@dimen/text_size_title_list"
+            android:textColor="@color/textColorTitle"
+           />
 
     </RelativeLayout>
 

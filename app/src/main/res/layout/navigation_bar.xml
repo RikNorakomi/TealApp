@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/navigation_bar_container"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/navigation_bar_height"
+              android:layout_gravity="center"
+              android:background="@color/colorPrimary"
+              android:gravity="center_horizontal"
+              android:orientation="horizontal"
+              android:paddingEnd="16dp"
+              android:paddingStart="16dp">
+
+
+    <LinearLayout
+        android:id="@+id/vimeo_container"
+        style="@style/navigation_toolbar_icons_style"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_vimeo_black_24dp"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/website_container"
+        style="@style/navigation_toolbar_icons_style"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_web_black_24dp"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/collections_container"
+        style="@style/navigation_toolbar_icons_style"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_collections_bookmark_black_24dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/downloads_container"
+        style="@style/navigation_toolbar_icons_style"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_cloud_download_black_24dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

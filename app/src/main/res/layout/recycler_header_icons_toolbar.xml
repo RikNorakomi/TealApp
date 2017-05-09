@@ -9,7 +9,7 @@
     <!-- Comments container-->
     <LinearLayout
         android:id="@+id/comments_container"
-        style="@style/icons_toolbar_style"
+        style="@style/recycler_header_icons_toolbar_style"
         android:orientation="vertical">
 
         <ImageView
@@ -29,7 +29,7 @@
     <!-- Thumb down container-->
     <LinearLayout
         android:id="@+id/thumb_down_container"
-        style="@style/icons_toolbar_style"
+        style="@style/recycler_header_icons_toolbar_style"
         android:orientation="vertical">
 
         <ImageView
@@ -48,7 +48,7 @@
     <!-- Thumb up container-->
     <LinearLayout
         android:id="@+id/thumb_up_container"
-        style="@style/icons_toolbar_style"
+        style="@style/recycler_header_icons_toolbar_style"
         android:orientation="vertical">
 
         <ImageView
@@ -67,7 +67,7 @@
     <!-- Share container-->
     <LinearLayout
         android:id="@+id/share_container"
-        style="@style/icons_toolbar_style"
+        style="@style/recycler_header_icons_toolbar_style"
         android:orientation="vertical">
 
         <ImageView
