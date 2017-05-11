@@ -1,5 +1,6 @@
 package norakomi.com.tealapp.Utils;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.view.View;

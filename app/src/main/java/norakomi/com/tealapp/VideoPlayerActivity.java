@@ -13,7 +13,7 @@ import com.google.android.youtube.player.YouTubePlayerView;
 
 import java.util.List;
 
-import norakomi.com.tealapp.Interfaces.IActionRequestedListener;
+import norakomi.com.tealapp.Interfaces.IRequestedActionListener;
 import norakomi.com.tealapp.Utils.App;
 import norakomi.com.tealapp.Utils.Config;
 import norakomi.com.tealapp.Utils.Logging;
@@ -28,7 +28,7 @@ import static norakomi.com.tealapp.Utils.Config.YOUTUBE_SEARCH_STRING;
 
 public class VideoPlayerActivity extends YouTubeBaseActivity implements
         YouTubePlayer.OnInitializedListener,
-        IActionRequestedListener {
+        IRequestedActionListener {
 
     public static final String VIDEO_ID = "VIDEO_ID";
     private OverviewAdapter adapter;
@@ -50,16 +50,18 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements
         YouTubePlayerView playerView = (YouTubePlayerView) findViewById(R.id.player_view);
         playerView.initialize(Config.TEAL_APP_YOUTUBE_API_KEY, this);
 
-        adapter = new OverviewAdapter(this, true);
+        adapter = new OverviewAdapter(this, DataManager.getInstance().getVideoFromId(mVideoId));
         RecyclerView recycler = (RecyclerView) findViewById(R.id.recycler_player_activity);
         recycler.setAdapter(adapter);
+
+
     }
 
     public void getVideos() {
         DataManager.getInstance().getVideos(YOUTUBE_SEARCH_STRING, new IDataManagerCallback() {
             @Override
             public void onResult(final List<VideoItem> result) {
-                adapter.setContent(result);
+                adapter.setRecyclerVideos(result);
             }
 
             @Override
@@ -117,6 +119,9 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements
                 break;
             case SAVE_TO_WATCH_LATER:
                 Logging.log(TAG, "SAVE_TO_WATCH_LATER clicked");
+                break;
+            case BOOKMARK:
+                DataManager.getInstance().toggleBookmarkedVideo(mVideoId);
                 break;
             case TOGGLE_AUTOPLAY:
                 Logging.log(TAG, "toggle autoplay clicked");

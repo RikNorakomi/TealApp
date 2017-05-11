@@ -14,18 +14,18 @@
     tools:showIn="@layout/recycler_header">
 
     <ImageView
-        android:id="@+id/expand_collapse_icon"
+        android:id="@+id/header_expand_collapse_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:src="@drawable/ic_arrow_drop_down_black_24dp"/>
 
     <TextView
-        android:id="@+id/title_text"
+        android:id="@+id/header_title_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@+id/expand_collapse_icon"
+        android:layout_toLeftOf="@+id/header_expand_collapse_icon"
         android:maxLines="2"
         android:text="Test text: Inner worlds, outer worlds - part 1 - akasha"
         android:textColor="@color/textColorTitle"
@@ -34,7 +34,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title_text"
+        android:layout_below="@+id/header_title_text"
         android:maxLines="1"
         android:text="2,145,675 views"
         android:textColor="@color/textColorSecondary"

@@ -14,10 +14,14 @@ import android.content.SharedPreferences;
 
 public class SharedPrefs {
 
+    private final String TAG = getClass().getSimpleName();
+
     private static final String APP_SHARED_PREFS = "norakomi_preferences"; //  Name of the file -.xml
     private static final String AUTOPLAY_ENABLED = "autoplayEnabled";
 
     private static final SharedPrefs instance = new SharedPrefs();
+
+    private static boolean isDebugMode = true;
 
     private final SharedPreferences sharedPrefs;
     private final SharedPreferences.Editor prefsEditor;
@@ -27,22 +31,22 @@ public class SharedPrefs {
     }
 
     private SharedPrefs() {
+        Logging.log(TAG , "in constructor SharedPrefs");
         sharedPrefs = AppContext.getAppContext().getSharedPreferences(APP_SHARED_PREFS, Activity.MODE_PRIVATE);
         prefsEditor = sharedPrefs.edit();
     }
 
-    public boolean isAutoplayEnabled(){
+    public boolean isAutoplayEnabled() {
         return sharedPrefs.getBoolean(AUTOPLAY_ENABLED, true);
     }
 
-    public void setAutoplayEnabled(boolean enabled){
+    public void setAutoplayEnabled(boolean enabled) {
         prefsEditor.putBoolean(AUTOPLAY_ENABLED, enabled);
         prefsEditor.apply();
     }
 
-    public void toggleAutoplay(){
+    public void toggleAutoplay() {
         prefsEditor.putBoolean(AUTOPLAY_ENABLED, !isAutoplayEnabled());
         prefsEditor.apply();
     }
-
 }

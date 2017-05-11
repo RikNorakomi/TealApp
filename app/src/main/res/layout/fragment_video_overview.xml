@@ -5,15 +5,8 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <com.google.android.youtube.player.YouTubePlayerView
-        android:id="@+id/player_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="150dp"/> <!-- Only for editor purposes-->
-
-
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_player_activity"
+        android:id="@+id/recycler_video_overview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"/>

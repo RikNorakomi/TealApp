@@ -64,6 +64,26 @@
     </LinearLayout>
 
 
+    <!-- Bookmark container-->
+    <LinearLayout
+        android:id="@+id/bookmark_container"
+        style="@style/recycler_header_icons_toolbar_style"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_bookmark_header_24dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bookmark"
+            android:textSize="@dimen/text_size_icon_inactive"/>
+
+    </LinearLayout>
+
+
     <!-- Share container-->
     <LinearLayout
         android:id="@+id/share_container"

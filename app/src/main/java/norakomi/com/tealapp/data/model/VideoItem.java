@@ -1,13 +1,18 @@
 package norakomi.com.tealapp.data.model;
 
+import io.realm.RealmObject;
+
 /**
  * Created by Rik van Velzen, on 30-10-2016.
  */
-public class VideoItem {
+public class VideoItem extends RealmObject {
+
+    public String id;
     private String title;
     private String description;
     private String thumbnailURL;
-    private String id;
+
+    private boolean isBookmarked;
 
     public String getId() {
         return id;
@@ -39,6 +44,14 @@ public class VideoItem {
 
     public void setThumbnailURL(String thumbnail) {
         this.thumbnailURL = thumbnail;
+    }
+
+    public boolean isBookmarked() {
+        return isBookmarked;
+    }
+
+    public void setBookmarked(boolean bookmarked) {
+        isBookmarked = bookmarked;
     }
 
     @Override

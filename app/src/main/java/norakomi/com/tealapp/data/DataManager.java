@@ -2,13 +2,18 @@ package norakomi.com.tealapp.data;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
+import io.realm.RealmResults;
 import norakomi.com.tealapp.Utils.App;
+import norakomi.com.tealapp.Utils.Logging;
+import norakomi.com.tealapp.data.model.BookmarkedVideoId;
 import norakomi.com.tealapp.data.model.VideoItem;
 import norakomi.com.tealapp.data.service.YoutubeService;
 
@@ -72,6 +77,10 @@ public class DataManager {
         }
     }
 
+    private ArrayList<VideoItem> getVideosFromCache() {
+        return cachedResults;
+    }
+
     /**
      * This method queries the cached search query results for requested id
      *
@@ -88,4 +97,94 @@ public class DataManager {
 
         return null;
     }
+
+    /**
+     * This method returns a new collection of video items depending on requested set of string Id
+     *
+     * @param videoIds
+     * @return Collection of VideoItems
+     */
+    public List<VideoItem> getVideosFromIdSet(Set<String> videoIds) {
+        List<VideoItem> videoItems = new ArrayList<>();
+        for (VideoItem video : cachedResults) {
+            if (videoIds.contains(video.getId())) {
+                videoItems.add(video);
+            }
+        }
+
+        Logging.log(TAG, "in getVideosFromIdSet. Return size = " + videoItems.size());
+
+        return videoItems;
+    }
+
+    public void toggleBookmarkedVideo(String videoId) {
+        boolean bookmarkedVideoPresentInRealm = false;
+
+        RealmController realm = RealmController.getInstance();
+
+        RealmResults<BookmarkedVideoId> bookmarkedVideos = realm.getBookmarkedVideoIDs();
+        Logging.log(TAG, "in toggleBookmarkedVideo for videoId: " + videoId);
+
+        // check if video
+        for (BookmarkedVideoId bookmarkedVideoId : bookmarkedVideos) {
+            if (bookmarkedVideoId.getVideoId().equals(videoId)) {
+                Logging.log(TAG, "Found video bookmarked");
+                bookmarkedVideoPresentInRealm = true;
+                break;
+            }
+        }
+        if (bookmarkedVideoPresentInRealm) {
+            realm.removeBookmarkedVideo(videoId);
+        } else {
+            realm.addBookmarkedVideo(videoId);
+        }
+    }
+
+    public boolean isVideoBookmarked(@NonNull String videoId) {
+        RealmResults<BookmarkedVideoId> bookmarkedVideos = RealmController.getInstance().getBookmarkedVideoIDs();
+        Logging.log(TAG, "in isVideoBookmarked for videoId: " + videoId);
+        for (BookmarkedVideoId bookmarkedVideoId : bookmarkedVideos) {
+            if (bookmarkedVideoId.getVideoId().equals(videoId)) {
+                Logging.log(TAG, "Found video to be bookmarked");
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Creates a VideoItem Collection for Bookmarked Videos
+     * @return
+     */
+    public List<VideoItem> getBookmarkedVideos() {
+        RealmResults<BookmarkedVideoId> bookmarkedVideoIds = RealmController.getInstance().getBookmarkedVideoIDs();
+
+        List<VideoItem> cachedVideos = getVideosFromCache();
+        List<VideoItem> bookmarkedVideos = new ArrayList<>();
+        Logging.log(TAG, "in getBookmarkedVideos:");
+
+        // FIXME: 11-5-2017 this is sub optimal for performance 
+        for (VideoItem video : cachedVideos) {
+            if (isVideoBookmarked(video, bookmarkedVideoIds)){
+                bookmarkedVideos.add(video);
+            }
+        }
+
+        Logging.log(TAG , "returning bookmarked videos with size: " + bookmarkedVideoIds.size());
+
+        return bookmarkedVideos;
+    }
+
+    private boolean isVideoBookmarked(VideoItem video, RealmResults<BookmarkedVideoId> bookmarkedVideoIds) {
+        for (BookmarkedVideoId bookmarkedVideoId : bookmarkedVideoIds) {
+            if (bookmarkedVideoId.getVideoId().equals(video.getId())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
 }

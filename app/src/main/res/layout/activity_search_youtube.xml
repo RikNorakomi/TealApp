@@ -5,20 +5,26 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <norakomi.com.tealapp.NavigationBar
-        android:id="@+id/overview_navigation_bar"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/overview_tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/navigation_bar_height"/>
+        android:layout_height="@dimen/navigation_bar_height"
+        android:background="@color/colorPrimary"
+        app:tabIndicatorHeight="0dp">
+    </android.support.design.widget.TabLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/dividerLineDark"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_overview_activity"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/overview_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="LinearLayoutManager"/>
+        android:layout_height="match_parent">
+
+
+    </android.support.v4.view.ViewPager>
+
 
 </LinearLayout>

@@ -12,7 +12,7 @@ import android.support.annotation.Nullable;
  * www.norakomi.com
  */
 
-public interface IActionRequestedListener {
+public interface IRequestedActionListener {
 
     enum RequestedAction {
         // Actions for VideoOverviewActivity
@@ -20,6 +20,7 @@ public interface IActionRequestedListener {
         NOT_INTERESTED,
         SAVE_TO_WATCH_LATER,
         SHARE,
+        BOOKMARK,
 
         // Actions for VideoPlayerActivity
         TOGGLE_SHOW_DESCRIPTION,

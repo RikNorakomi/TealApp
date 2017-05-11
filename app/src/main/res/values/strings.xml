@@ -9,4 +9,9 @@
     <string name="up_next">Up next</string>
     <string name="autoplay">Autoplay</string>
     <string name="share">Share</string>
+    <string name="bookmark">Bookmark</string>
+    <string name="menu_item_share">Share</string>
+    <string name="not_interested">Not interested</string>
+    <string name="save_to_watch_later">Save to watch later</string>
+    <string name="bookmark_videos_empty_state_text">No bookmarked videos available\nBookmark videos via the options menu</string>
 </resources>

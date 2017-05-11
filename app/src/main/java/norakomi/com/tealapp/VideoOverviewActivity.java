@@ -1,24 +1,15 @@
 package norakomi.com.tealapp;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 
 import java.util.Date;
-import java.util.List;
 
-import norakomi.com.tealapp.Interfaces.IActionRequestedListener;
 import norakomi.com.tealapp.Utils.App;
-import norakomi.com.tealapp.Utils.Logging;
-import norakomi.com.tealapp.data.DataManager;
-import norakomi.com.tealapp.data.IDataManagerCallback;
-import norakomi.com.tealapp.data.model.VideoItem;
-import norakomi.com.tealapp.share.ShareVideoTask;
-
-import static norakomi.com.tealapp.Utils.Config.YOUTUBE_SEARCH_STRING;
 
 /**
  * Created by Rik van Velzen, on 30-10-2016.
@@ -29,86 +20,63 @@ import static norakomi.com.tealapp.Utils.Config.YOUTUBE_SEARCH_STRING;
  * https://developers.google.com/youtube/v3/docs/search/list
  */
 
-public class VideoOverviewActivity extends AppCompatActivity implements IActionRequestedListener {
+public class VideoOverviewActivity extends AppCompatActivity {
 
-    private final String TAG = getClass().getSimpleName();
-
-    private RecyclerView recycler;
-    private OverviewAdapter adapter;
-    private long backButtonClickTime = 0;
+    private long backButtonElapsedTime = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_youtube);
-
-
         setupViews();
-        getVideos();
     }
 
     private void setupViews() {
-        adapter = new OverviewAdapter(this, false);
-        recycler = (RecyclerView) findViewById(R.id.recycler_overview_activity);
-        recycler.setAdapter(adapter);
-
         // remove shadow line from toolbar
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setElevation(0);
         }
+
+        OverviewPagerAdapter mPagerAdapter = new OverviewPagerAdapter(getSupportFragmentManager());
+        ViewPager pager = (ViewPager) findViewById(R.id.overview_viewpager);
+        pager.setAdapter(mPagerAdapter);
+        pager.setOffscreenPageLimit(3);
+
+        setupTabLayout(pager);
     }
 
-    private void getVideos() {
-        DataManager.getInstance().getVideos(YOUTUBE_SEARCH_STRING, new IDataManagerCallback() {
-            @Override
-            public void onResult(final List<VideoItem> result) {
-                adapter.setContent(result);
-            }
+    private void setupTabLayout(ViewPager pager) {
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.overview_tab_layout);
+        tabLayout.setupWithViewPager(pager);
 
-            @Override
-            public void onError(Exception e) {
-                // TODO: 8-5-2017 handle error
-            }
-        });
-    }
+        // add icons to tab layout
+        int[] imageResId = {
+                R.drawable.ic_videocam_black_24dp,
+                R.drawable.ic_web_black_24dp,
+                R.drawable.ic_collections_bookmark_black_24dp,
+                R.drawable.ic_cloud_download_black_24dp
+        };
 
-    @Override
-    public void onActionRequested(String videoId, RequestedAction requestedAction) {
-        switch (requestedAction) {
-            case PLAY_VIDEO:
-                Intent intent = new Intent(this, VideoPlayerActivity.class);
-                intent.putExtra(VideoPlayerActivity.VIDEO_ID, videoId);
-                startActivity(intent);
-                break;
-            case SHARE:
-                VideoItem video = DataManager.getInstance().getVideoFromId(videoId);
-                if (video == null) {
-                    App.toast("Error: issue sharing video!");
-                } else {
-                    new ShareVideoTask(video, this);
-                }
-                break;
-            case NOT_INTERESTED:
-                break;
-            case SAVE_TO_WATCH_LATER:
-                break;
-            default:
-                Logging.logError(TAG, "Unable to handle requested action",
-                        new IllegalStateException(requestedAction.name()));
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            if (tab != null) {
+                tab.setIcon(imageResId[i]);
+            }
         }
     }
+
 
     @Override
     public void onBackPressed() {
         long timestamp = new Date().getTime();
 
         /* App exit can only be performed by double clickin gon back within specified millisecs. */
-        if (timestamp - backButtonClickTime <= 5000) {
-            backButtonClickTime = 0;
+        if (timestamp - backButtonElapsedTime <= 5000) {
+            backButtonElapsedTime = 0;
             super.onBackPressed();
         } else {
-            backButtonClickTime = timestamp;
+            backButtonElapsedTime = timestamp;
             App.toast("Press again to exit app");
         }
     }

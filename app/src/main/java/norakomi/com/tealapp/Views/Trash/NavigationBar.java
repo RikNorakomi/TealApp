@@ -1,4 +1,4 @@
-package norakomi.com.tealapp;
+package norakomi.com.tealapp.Views.Trash;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -6,6 +6,8 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import norakomi.com.tealapp.R;
 
 /**
  * Created by Rik van Velzen, Norakomi.com, on 9-5-2017.
