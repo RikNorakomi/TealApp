@@ -164,7 +164,7 @@ public class DataManager {
         List<VideoItem> bookmarkedVideos = new ArrayList<>();
         Logging.log(TAG, "in getBookmarkedVideos:");
 
-        // FIXME: 11-5-2017 this is sub optimal for performance 
+        // FIXME: 11-5-2017 this is sub optimal for performance
         for (VideoItem video : cachedVideos) {
             if (isVideoBookmarked(video, bookmarkedVideoIds)){
                 bookmarkedVideos.add(video);

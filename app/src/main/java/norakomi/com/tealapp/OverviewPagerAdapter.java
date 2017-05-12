@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import norakomi.com.tealapp.Utils.Logging;
 import norakomi.com.tealapp.Views.BookmarkFragment;
-import norakomi.com.tealapp.Views.DownloadFragment;
+import norakomi.com.tealapp.Views.DebugFragment;
 import norakomi.com.tealapp.Views.VideoOverviewFragment;
 import norakomi.com.tealapp.Views.WebsiteFragment;
 
@@ -39,7 +39,7 @@ class OverviewPagerAdapter extends FragmentStatePagerAdapter {
             case 2:
                 return new BookmarkFragment();
             case 3:
-                return new DownloadFragment();
+                return new DebugFragment();
             default:
                 String msg = "Unable to determine";
                 Logging.logError(TAG, msg, new IllegalStateException(msg));

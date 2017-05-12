@@ -4,6 +4,19 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
+
+
+
+    <TextView
+        android:id="@+id/listViewLogcat"
+        android:layout_width="match_parent"
+        android:layout_above="@+id/logBookmarkedVids"
+        android:scrollbars = "vertical"
+        android:text="testtext"
+        android:layout_height="match_parent">
+
+    </TextView>
+
     <Button
         android:id="@+id/logBookmarkedVids"
         android:layout_width="wrap_content"
@@ -11,6 +24,8 @@
         android:layout_gravity="center"
         android:background="@color/colorPrimary"
         android:layout_centerInParent="true"
+        android:layout_margin="8dp"
+        android:layout_alignParentBottom="true"
         android:gravity="center"
         android:padding="8dp"
         android:text="log bookmarked videos"/>
