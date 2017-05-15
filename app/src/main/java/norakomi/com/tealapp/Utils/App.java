@@ -26,6 +26,10 @@ public class App {
         Log.e(LOG_PREFIX + classTag, message);
     }
 
+    public static void logError(String classTag, String message, Throwable t) {
+        Log.e(LOG_PREFIX + classTag, message);
+    }
+
     public static void toast(String string) {
         Toast toast = Toast.makeText(AppContext.getAppContext(), string, Toast.LENGTH_SHORT);
         TextView v = (TextView) toast.getView().findViewById(android.R.id.message);

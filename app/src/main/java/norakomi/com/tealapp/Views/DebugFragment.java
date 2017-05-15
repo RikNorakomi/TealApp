@@ -12,12 +12,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import norakomi.com.tealapp.R;
 import norakomi.com.tealapp.Utils.Logging;
 import norakomi.com.tealapp.data.DataManager;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by Rik van Velzen, Norakomi.com, on 10-5-2017.
@@ -33,7 +33,7 @@ public class DebugFragment extends Fragment {
     private final String TAG = getClass().getSimpleName();
 
     @NonNull
-    public CompositeSubscription mSubscription;
+    public CompositeDisposable mCompositeDisposable;
     private TextView logView;
 
     @Nullable
@@ -61,8 +61,8 @@ public class DebugFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         Logging.log(TAG , "Creating log subscription");
-        mSubscription = new CompositeSubscription();
-        mSubscription.add(Logging.getLogOutputRx()
+        mCompositeDisposable = new CompositeDisposable();
+        mCompositeDisposable.add(Logging.getLogOutputRx()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::updateLogView));
@@ -77,6 +77,6 @@ public class DebugFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         Logging.log(TAG , "in onDetach. Unsubcribed!!!");
-        mSubscription.unsubscribe();
+        mCompositeDisposable.clear();
     }
 }

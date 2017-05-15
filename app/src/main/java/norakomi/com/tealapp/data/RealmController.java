@@ -2,11 +2,14 @@ package norakomi.com.tealapp.data;
 
 import android.support.annotation.NonNull;
 
+import java.util.List;
+
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import norakomi.com.tealapp.Utils.Logging;
 import norakomi.com.tealapp.data.model.BookmarkedVideoId;
+import norakomi.com.tealapp.data.model.VideoItem;
 
 /**
  * Created by Rik van Velzen, Norakomi.com, on 11-5-2017.
@@ -44,6 +47,33 @@ class RealmController {
 
         return results;
     }
+
+    public List<VideoItem> getVideosFromRealm() {
+        Realm realm = Realm.getDefaultInstance();
+        return realm.where(VideoItem.class).findAll();
+    }
+
+    // FIXME: 15-5-2017 return type
+    public Object cacheVideos(List<VideoItem> videoItems){
+        // SAY YES TO THIS
+        Realm realm = null;
+        try { // I could use try-with-resources here
+            realm = Realm.getDefaultInstance();
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    realm.insertOrUpdate(videoItems);
+                }
+            });
+        } finally {
+            if(realm != null) {
+                realm.close();
+            }
+        }
+
+        return new Object();
+    }
+
 
     /**
      * Removes id from bookmarked video id's
@@ -87,4 +117,6 @@ class RealmController {
 
 
     }
+
+
 }

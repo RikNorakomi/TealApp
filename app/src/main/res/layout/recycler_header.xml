@@ -9,9 +9,16 @@
     <include layout="@layout/recycler_header_title_container"/>
 
     <!-- Icons section -->
-    <include
+    <norakomi.com.tealapp.Views.Trash.VideoPlayerHeaderIconBar
         android:id="@+id/icons_toolbar"
-        layout="@layout/recycler_header_icons_toolbar"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </norakomi.com.tealapp.Views.Trash.VideoPlayerHeaderIconBar>
+
+    <!--<include-->
+        <!--android:id="@+id/icons_toolbar"-->
+        <!--layout="@layout/recycler_header_icons_toolbar"/>-->
 
     <!-- Divider line -->
     <View

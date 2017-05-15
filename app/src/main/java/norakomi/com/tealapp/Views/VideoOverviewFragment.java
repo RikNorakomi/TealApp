@@ -6,13 +6,19 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import norakomi.com.tealapp.Interfaces.IRequestedActionListener;
 import norakomi.com.tealapp.OverviewAdapter;
 import norakomi.com.tealapp.R;
@@ -20,7 +26,6 @@ import norakomi.com.tealapp.Utils.App;
 import norakomi.com.tealapp.Utils.Logging;
 import norakomi.com.tealapp.VideoPlayerActivity;
 import norakomi.com.tealapp.data.DataManager;
-import norakomi.com.tealapp.data.IDataManagerCallback;
 import norakomi.com.tealapp.data.model.VideoItem;
 import norakomi.com.tealapp.share.ShareVideoTask;
 
@@ -39,11 +44,16 @@ import static norakomi.com.tealapp.Utils.Config.YOUTUBE_SEARCH_STRING;
 public class VideoOverviewFragment extends Fragment implements IRequestedActionListener {
 
     private OverviewAdapter adapter;
+    private ViewGroup rootView;
+    private RecyclerView recycler;
+    private ProgressBar progressSpinner;
+    private SwipeRefreshLayout swipeRefresh;
+    private Disposable subscription;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(
+        rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_video_overview, container, false);
 
         setupViews(rootView);
@@ -54,22 +64,50 @@ public class VideoOverviewFragment extends Fragment implements IRequestedActionL
 
     private void setupViews(ViewGroup rootView) {
         adapter = new OverviewAdapter(this);
-        RecyclerView recycler = (RecyclerView) rootView.findViewById(R.id.recycler_video_overview);
+        recycler = (RecyclerView) rootView.findViewById(R.id.overview_recycler_video);
+        progressSpinner = (ProgressBar) rootView.findViewById(R.id.overview_progress_loader);
+        swipeRefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.overview_swiperefresh);
+
         recycler.setAdapter(adapter);
+        swipeRefresh.setOnRefreshListener(() -> {
+            getVideos();
+            swipeRefresh.setRefreshing(false);
+        });
     }
 
     private void getVideos() {
-        DataManager.getInstance().getVideos(YOUTUBE_SEARCH_STRING, new IDataManagerCallback() {
-            @Override
-            public void onResult(final List<VideoItem> result) {
-                adapter.setRecyclerVideos(result);
-            }
+        showProgressSpinner(true);
 
-            @Override
-            public void onError(Exception e) {
-                // TODO: 8-5-2017 handle error
-            }
-        });
+        // Using Rx here because we could have one result for cached items and one result for api call
+        Observable<List<VideoItem>> observable =
+                DataManager.getInstance().getVideosRx(YOUTUBE_SEARCH_STRING)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread());
+
+        subscription = observable.subscribe(this::onResultGetVideos, this::onErrorGetVideos);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        subscription.dispose();
+    }
+
+    private void onErrorGetVideos(Throwable throwable) {
+        String message = "Error getting videos";
+        Logging.logError(TAG, message, throwable);
+    }
+
+    private void onResultGetVideos(List<VideoItem> videoItems) {
+        Logging.log(TAG, "in OnresultsOk. Size video items: " + videoItems.size());
+        showProgressSpinner(false);
+        adapter.setRecyclerVideos(videoItems);
+
+    }
+
+    private void showProgressSpinner(boolean enable) {
+        progressSpinner.setVisibility(enable ? View.VISIBLE : View.GONE);
+        recycler.setVisibility(enable ? View.GONE : View.VISIBLE);
     }
 
     @Override

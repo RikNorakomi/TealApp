@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import io.realm.RealmResults;
 import norakomi.com.tealapp.Utils.App;
 import norakomi.com.tealapp.Utils.Logging;
@@ -32,6 +35,7 @@ public class DataManager {
 
     private static final DataManager ourInstance = new DataManager();
     private final HashMap<String, List<VideoItem>> cachedQueries = new HashMap();
+    private final RealmController mRealmController;
     private ArrayList<VideoItem> cachedResults = new ArrayList<>();
 
     public static DataManager getInstance() {
@@ -39,6 +43,7 @@ public class DataManager {
     }
 
     private DataManager() {
+        mRealmController = RealmController.getInstance();
     }
 
     /**
@@ -75,6 +80,45 @@ public class DataManager {
                 iDataManagerCallback.onError(e);
             }
         }
+    }
+
+    /**
+     * Returns an observable of List<VideoItem> for a youtube video query
+     * Also check to see if realm has any videos cached and if so merge the result with the observable
+     */
+    public Observable<List<VideoItem>> getVideosRx(String searchQuery) {
+        Observable<List<VideoItem>> observable =
+                Observable.fromCallable(() -> {
+            // create youtube service and perform query
+            return new YoutubeService().search(searchQuery);
+        })
+                .subscribeOn(Schedulers.io())
+                // Write result to Realm on Computation scheduler to cache data
+                .observeOn(Schedulers.computation())
+                .map(this::writeToRealm) // FIXME: 15-5-2017
+                // Read results in Android Main Thread (UI)
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(this::readFromRealm); // FIXME: 15-5-2017
+
+        List<VideoItem> cachedVideoItems = mRealmController.getVideosFromRealm();
+        if (cachedVideoItems != null) {
+            Logging.log(TAG, "Found cached videoItems in realm. Merging observable");
+            // Merge with the observable from youtube api call
+            observable = observable.mergeWith(Observable.just(cachedVideoItems));
+        } else {
+            Logging.log(TAG, "No cached videoItems found in realm. Not Merging observable");
+        }
+
+        return observable;
+    }
+
+    private List<VideoItem> readFromRealm(Object o) {
+        return mRealmController.getVideosFromRealm();
+    }
+
+    // FIXME: 15-5-2017
+    private Object writeToRealm(List<VideoItem> videoItems) {
+        return mRealmController.cacheVideos(videoItems);
     }
 
     private ArrayList<VideoItem> getVideosFromCache() {
@@ -155,6 +199,7 @@ public class DataManager {
 
     /**
      * Creates a VideoItem Collection for Bookmarked Videos
+     *
      * @return
      */
     public List<VideoItem> getBookmarkedVideos() {
@@ -166,12 +211,12 @@ public class DataManager {
 
         // FIXME: 11-5-2017 this is sub optimal for performance
         for (VideoItem video : cachedVideos) {
-            if (isVideoBookmarked(video, bookmarkedVideoIds)){
+            if (isVideoBookmarked(video, bookmarkedVideoIds)) {
                 bookmarkedVideos.add(video);
             }
         }
 
-        Logging.log(TAG , "returning bookmarked videos with size: " + bookmarkedVideoIds.size());
+        Logging.log(TAG, "returning bookmarked videos with size: " + bookmarkedVideoIds.size());
 
         return bookmarkedVideos;
     }
@@ -186,5 +231,19 @@ public class DataManager {
         return false;
     }
 
+    public boolean isVideoThumbedUp(String videoId) {
+        return false;
+    }
 
+    public boolean isVideoThumbedDown(String videoId) {
+        return false;
+    }
+
+    public void toggleThumbDownVideo(String videoId) {
+
+    }
+
+    public void toggleThumbUpVideo(String videoId) {
+
+    }
 }

@@ -5,12 +5,14 @@ buildscript {
         jcenter()
     }
     dependencies {
+        // latest gradle version: https://bintray.com/android/android-tools/com.android.tools.build.gradle/view
         classpath 'com.android.tools.build:gradle:2.3.2'
 
         // Issues with jack and realm: using retrolambda for now..
-        classpath 'me.tatarka:gradle-retrolambda:3.2.0'
-//        classpath "io.realm:realm-gradle-plugin:3.1.4"
-        classpath 'io.realm:realm-gradle-plugin:2.3.0'
+        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
+        classpath 'io.realm:realm-gradle-plugin:3.1.4'
+        // Latest plugin check: https://bintray.com/realm/maven/realm-gradle-plugin
+//        classpath 'io.realm:realm-gradle-plugin:2.3.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

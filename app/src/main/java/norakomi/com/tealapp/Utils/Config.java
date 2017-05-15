@@ -12,4 +12,6 @@ public class Config {
     public static final String TEAL_APP_YOUTUBE_API_KEY = "AIzaSyDrcwwEEP1OCabnLMLnfUvYznR424_FhHg";
 
     public static final String WEBSITE_URL = "https://tealswan.com/";
+
+    public static final String LOG_PREFIX = "Norakomi: ";
 }

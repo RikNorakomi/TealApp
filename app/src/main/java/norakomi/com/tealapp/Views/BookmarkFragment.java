@@ -1,6 +1,5 @@
 package norakomi.com.tealapp.Views;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -32,6 +31,7 @@ public class BookmarkFragment extends Fragment {
 
     private final String TAG = getClass().getSimpleName();
     private ViewGroup rootView;
+    private OverviewAdapter adapter;
 
     @Nullable
     @Override
@@ -51,7 +51,7 @@ public class BookmarkFragment extends Fragment {
         Logging.log(TAG, "in onResume");
         super.onResume();
 
-        // todo handle race condition
+        // todo handle race condition// handle bookmark reactively
         List<VideoItem> bookmarkedVideos = DataManager.getInstance().getBookmarkedVideos();
         Logging.log(TAG , "bookmarkedVideos.size = " + bookmarkedVideos.size());
 
@@ -60,22 +60,15 @@ public class BookmarkFragment extends Fragment {
         TextView emptyStateTextView = (TextView) rootView.findViewById(R.id.fragment_bookmark_empty_state_text);
         RecyclerView recycler = (RecyclerView) rootView.findViewById(R.id.fragment_bookmark_recycler);
 
-        OverviewAdapter adapter = new OverviewAdapter(RequestedActionProvider.getInstance());
+        adapter = new OverviewAdapter(RequestedActionProvider.getInstance());
         recycler.setAdapter(adapter);
         adapter.setRecyclerVideos(bookmarkedVideos);
 
         emptyStateTextView.setVisibility(bookmarkedVideosAvailable ? View.GONE : View.VISIBLE);
-
         recycler.setVisibility(bookmarkedVideosAvailable ? View.VISIBLE : View.GONE);
 
         Logging.log(TAG , "setting recycler visibility to: " + recycler.getVisibility());
 
     }
 
-    @Override
-    public void onAttach(Context context) {
-        Logging.log(TAG, "in onAttach");
-
-        super.onAttach(context);
-    }
 }

@@ -1,3 +1,14 @@
+Technical inspiration:
+https://medium.com/@Miqubel/caching-with-realm-and-rxjava-80f48c5f5e37
+https://news.realm.io/news/using-realm-with-rxjava/
+https://medium.com/@Zhuinden/how-to-use-realm-for-android-like-a-champ-and-how-to-tell-if-youre-doing-it-wrong-ac4f66b7f149
+https://www.youtube.com/watch?v=Rv8EWY8SFY8&t=1148s
+
+Updates in RealmDB (f.e. bookmarked y/n, 16:00)
+https://www.youtube.com/watch?v=QT7XD1hifkU
+
+https://blog.mindorks.com/migrating-from-rxjava1-to-rxjava2-5dac0a94b4aa
+
 Design inspiration:
 https://material.uplabs.com/posts/bitshares-munich-carbon-section-switch-interacti
 

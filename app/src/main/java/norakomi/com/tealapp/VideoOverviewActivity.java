@@ -22,6 +22,8 @@ import norakomi.com.tealapp.Utils.App;
 
 public class VideoOverviewActivity extends AppCompatActivity {
 
+    private final String TAG = getClass().getSimpleName();
+
     private long backButtonElapsedTime = 0;
 
     @Override

@@ -14,4 +14,5 @@
     <string name="not_interested">Not interested</string>
     <string name="save_to_watch_later">Save to watch later</string>
     <string name="bookmark_videos_empty_state_text">No bookmarked videos available\nBookmark videos via the options menu</string>
+    <string name="overview_error_loading_videos">Error loading videos</string>
 </resources>

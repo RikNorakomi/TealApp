@@ -1,10 +1,10 @@
 package norakomi.com.tealapp;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -18,17 +18,19 @@ import norakomi.com.tealapp.Utils.App;
 import norakomi.com.tealapp.Utils.Config;
 import norakomi.com.tealapp.Utils.Logging;
 import norakomi.com.tealapp.Utils.SharedPrefs;
+import norakomi.com.tealapp.Utils.UiUtil;
 import norakomi.com.tealapp.data.DataManager;
 import norakomi.com.tealapp.data.IDataManagerCallback;
 import norakomi.com.tealapp.data.model.VideoItem;
 import norakomi.com.tealapp.share.ShareVideoTask;
 
-import static android.content.ContentValues.TAG;
 import static norakomi.com.tealapp.Utils.Config.YOUTUBE_SEARCH_STRING;
 
 public class VideoPlayerActivity extends YouTubeBaseActivity implements
         YouTubePlayer.OnInitializedListener,
         IRequestedActionListener {
+
+    private final String TAG = getClass().getSimpleName();
 
     public static final String VIDEO_ID = "VIDEO_ID";
     private OverviewAdapter adapter;
@@ -58,6 +60,7 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements
     }
 
     public void getVideos() {
+        final Activity activity = this;
         DataManager.getInstance().getVideos(YOUTUBE_SEARCH_STRING, new IDataManagerCallback() {
             @Override
             public void onResult(final List<VideoItem> result) {
@@ -66,7 +69,7 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements
 
             @Override
             public void onError(Exception e) {
-                // TODO: 8-5-2017 handle error
+                UiUtil.showSnackbarLong(activity, getString(R.string.overview_error_loading_videos));
             }
         });
     }
@@ -74,7 +77,7 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider provider,
                                         YouTubeInitializationResult result) {
-        Toast.makeText(this, getString(R.string.player_error), Toast.LENGTH_LONG).show();
+        App.toastLong(getString(R.string.player_error));
     }
 
     @Override

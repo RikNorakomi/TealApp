@@ -23,6 +23,7 @@ import java.util.List;
 import norakomi.com.tealapp.Interfaces.IRequestedActionListener;
 import norakomi.com.tealapp.Utils.Logging;
 import norakomi.com.tealapp.Utils.SharedPrefs;
+import norakomi.com.tealapp.Views.Trash.VideoPlayerHeaderIconBar;
 import norakomi.com.tealapp.data.DataManager;
 import norakomi.com.tealapp.data.model.VideoItem;
 
@@ -32,8 +33,6 @@ import static norakomi.com.tealapp.Interfaces.IRequestedActionListener.Requested
 import static norakomi.com.tealapp.Interfaces.IRequestedActionListener.RequestedAction.SAVE_TO_WATCH_LATER;
 import static norakomi.com.tealapp.Interfaces.IRequestedActionListener.RequestedAction.SHARE;
 import static norakomi.com.tealapp.Interfaces.IRequestedActionListener.RequestedAction.SHOW_COMMENTS;
-import static norakomi.com.tealapp.Interfaces.IRequestedActionListener.RequestedAction.THUMB_DOWN;
-import static norakomi.com.tealapp.Interfaces.IRequestedActionListener.RequestedAction.THUMB_UP;
 import static norakomi.com.tealapp.Interfaces.IRequestedActionListener.RequestedAction.TOGGLE_AUTOPLAY;
 import static norakomi.com.tealapp.Interfaces.IRequestedActionListener.RequestedAction.TOGGLE_SHOW_DESCRIPTION;
 
@@ -231,28 +230,29 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     class ViewHolderHeader extends RecyclerView.ViewHolder {
 
         private final SwitchCompat mSwitchCompat;
-        private final View mCommentsIcon;
-        private final View mThumbsDownIcon;
-        private final View mThumbsUpIcon;
-        private final View mShareIcon;
         private final TextView mHeaderTitle;
-        private final View mBookmarkIcon;
+        private final VideoPlayerHeaderIconBar mIconsToolbar;
+
 
         private boolean descriptionCollapsed;
         int rotationAngle = 0;
 
-        ViewHolderHeader(View headerView, VideoItem headerVideo) {
+        ViewHolderHeader(View headerView, VideoItem video) {
             super(headerView);
             // view references
-            mCommentsIcon = headerView.findViewById(R.id.comments_container);
-            mThumbsDownIcon = headerView.findViewById(R.id.thumb_down_container);
-            mThumbsUpIcon = headerView.findViewById(R.id.thumb_up_container);
-            mBookmarkIcon = headerView.findViewById(R.id.bookmark_container);
-            mShareIcon = headerView.findViewById(R.id.share_container);
             mSwitchCompat = (SwitchCompat) headerView.findViewById(R.id.autoplay_switch);
             mHeaderTitle = (TextView) headerView.findViewById(R.id.header_title_text);
+            mIconsToolbar = (norakomi.com.tealapp.Views.Trash.VideoPlayerHeaderIconBar) headerView.findViewById(R.id.icons_toolbar);
 
-            mHeaderTitle.setText(headerVideo.getTitle());
+            // todo find more elegant wat; due to rx video can be null
+            if (video == null)
+                return;
+
+            final DataManager dataManager = DataManager.getInstance();
+            final String videoId = video.getId();
+
+
+            mHeaderTitle.setText(video.getTitle());
             mSwitchCompat.setChecked(SharedPrefs.getInstance().isAutoplayEnabled());
 
             View mTitleContainer = headerView.findViewById(R.id.title_container);
@@ -267,18 +267,47 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 descriptionCollapsed = !descriptionCollapsed;
             });
 
+
             // set icon states
-            boolean isBookmarked = DataManager.getInstance().isVideoBookmarked(headerVideo.getId());
-            mBookmarkIcon.setSelected(isBookmarked);
+            boolean isBookmarked = dataManager.isVideoBookmarked(videoId);
+            boolean isThumbedUp = dataManager.isVideoThumbedUp(videoId);
+            boolean isThumbedDown = dataManager.isVideoThumbedDown(videoId);
+            mIconsToolbar.setBookmarkEnabled(isBookmarked);
+            mIconsToolbar.setThumbedUpEnabled(isThumbedUp);
+            mIconsToolbar.setThumbedDownEnabled(isThumbedDown);
 
             // setup clickListeners
             mSwitchCompat.setOnClickListener(view -> mActionListener.onActionRequested(null, TOGGLE_AUTOPLAY));
             mTitleContainer.setOnClickListener(view -> mActionListener.onActionRequested(null, TOGGLE_SHOW_DESCRIPTION));
-            mCommentsIcon.setOnClickListener(view -> mActionListener.onActionRequested(null, SHOW_COMMENTS));
-            mThumbsDownIcon.setOnClickListener(view -> mActionListener.onActionRequested(null, THUMB_DOWN));
-            mThumbsUpIcon.setOnClickListener(view -> mActionListener.onActionRequested(null, THUMB_UP));
-            mShareIcon.setOnClickListener(view -> mActionListener.onActionRequested(null, SHARE));
-            mBookmarkIcon.setOnClickListener(view -> mActionListener.onActionRequested(null, BOOKMARK));
+
+            mIconsToolbar.setIconClickListener(clickedIcon -> {
+                switch (clickedIcon) {
+                    case BOOKMARK:
+//                        mActionListener.onActionRequested(null, BOOKMARK);
+                        dataManager.toggleBookmarkedVideo(videoId);
+                        mIconsToolbar.setBookmarkEnabled(dataManager.isVideoBookmarked(videoId));
+                        break;
+                    case COMMENTS:
+                        mActionListener.onActionRequested(null, SHOW_COMMENTS);
+                        break;
+                    case SHARE:
+                        mActionListener.onActionRequested(videoId, SHARE);
+                        break;
+                    case THUMBS_DOWN:
+//                        mActionListener.onActionRequested(null, THUMB_DOWN);
+                        dataManager.toggleThumbDownVideo(videoId);
+                        mIconsToolbar.setThumbDownEnabled(dataManager.isVideoThumbedDown(videoId));
+                        break;
+                    case THUMBS_UP:
+//                        mActionListener.onActionRequested(null, THUMB_UP);
+                        dataManager.toggleThumbUpVideo(videoId);
+                        mIconsToolbar.setThumbUpEnabled(dataManager.isVideoThumbedUp(videoId));
+                        break;
+                    default:
+                        String message = "Unable to determine valid switch case";
+                        Logging.logError(TAG, message, new IllegalStateException(message));
+                }
+            });
 
 
         }
