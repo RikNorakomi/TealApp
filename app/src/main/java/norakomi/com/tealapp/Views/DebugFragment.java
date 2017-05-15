@@ -17,7 +17,6 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import norakomi.com.tealapp.R;
 import norakomi.com.tealapp.Utils.Logging;
-import norakomi.com.tealapp.data.DataManager;
 
 /**
  * Created by Rik van Velzen, Norakomi.com, on 10-5-2017.
@@ -46,7 +45,7 @@ public class DebugFragment extends Fragment {
         buttonLog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataManager.getInstance().getBookmarkedVideos();
+//                DataManager.getInstance().getBookmarkedVideos();
             }
         });
 

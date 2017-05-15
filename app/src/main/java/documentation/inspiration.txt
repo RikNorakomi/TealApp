@@ -8,6 +8,7 @@ Updates in RealmDB (f.e. bookmarked y/n, 16:00)
 https://www.youtube.com/watch?v=QT7XD1hifkU
 
 https://blog.mindorks.com/migrating-from-rxjava1-to-rxjava2-5dac0a94b4aa
+http://stackoverflow.com/questions/41707043/rxjava-implement-an-observable-for-an-object-update
 
 Design inspiration:
 https://material.uplabs.com/posts/bitshares-munich-carbon-section-switch-interacti

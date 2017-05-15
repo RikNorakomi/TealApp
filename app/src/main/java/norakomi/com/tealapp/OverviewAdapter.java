@@ -192,9 +192,9 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             popupMenu.inflate(R.menu.options_menu);
 
             // todo to RxJava
-            final boolean[] isVideoBookmarked = {DataManager.getInstance().isVideoBookmarked(videoId)};
+            final boolean isVideoBookmarked = DataManager.getInstance().isVideoBookmarked(videoId);
             MenuItem bookmarkItem = popupMenu.getMenu().findItem(R.id.options_menu_bookmark);
-            bookmarkItem.setTitle(isVideoBookmarked[0] ? "Un-bookmark" : "Bookmark");
+            bookmarkItem.setTitle(isVideoBookmarked ? "Un-bookmark" : "Bookmark");
 
             //adding click listener
             popupMenu.setOnMenuItemClickListener(menuItem -> {
@@ -211,8 +211,8 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         break;
                     case R.id.options_menu_bookmark:
                         mActionListener.onActionRequested(videoId, BOOKMARK);
-                        isVideoBookmarked[0] = !isVideoBookmarked[0];
-                        bookmarkItem.setTitle(isVideoBookmarked[0] ? "Un-bookmark" : "Bookmark");
+//                        isVideoBookmarked = !isVideoBookmarked;
+                        bookmarkItem.setTitle(!isVideoBookmarked ? "Un-bookmark" : "Bookmark");
                         break;
                     default:
                         Logging.logError(TAG, "Unable to handle requested action",

@@ -1,14 +1,12 @@
 package norakomi.com.tealapp.data;
 
-import android.support.annotation.NonNull;
-
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 import io.realm.Realm;
-import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import norakomi.com.tealapp.Utils.Logging;
-import norakomi.com.tealapp.data.model.BookmarkedVideoId;
 import norakomi.com.tealapp.data.model.VideoItem;
 
 /**
@@ -25,6 +23,7 @@ class RealmController {
     private final String TAG = getClass().getSimpleName();
     private static final RealmController ourInstance = new RealmController();
     private final Realm realm;
+    private RealmResults<VideoItem> bookmarkedVideos;
 
     public static RealmController getInstance() {
         return ourInstance;
@@ -35,88 +34,67 @@ class RealmController {
         realm = Realm.getDefaultInstance();
     }
 
-
-    /**
-     * @return a list of {@link BookmarkedVideoId} which hold id's for bookmarked videos
-     */
-    public RealmResults<BookmarkedVideoId> getBookmarkedVideoIDs() {
-        RealmQuery<BookmarkedVideoId> query = realm.where(BookmarkedVideoId.class);
-        RealmResults<BookmarkedVideoId> results = query.findAll();
-
-        Logging.log(TAG, "in getBookmarkedVideo. ResultSize = " + results.size());
-
-        return results;
-    }
-
     public List<VideoItem> getVideosFromRealm() {
         Realm realm = Realm.getDefaultInstance();
         return realm.where(VideoItem.class).findAll();
     }
 
+    public VideoItem getVideosFromId(String videoId) {
+        return realm.where(VideoItem.class).equalTo("id", videoId).findFirst();
+    }
+
+    public boolean isVideoBookmarked(String videoId) {
+        VideoItem video = realm.where(VideoItem.class).equalTo("id", videoId).findFirst();
+        return video.isBookmarked();
+    }
+
+
+    public Observable<List<VideoItem>> getBookmarkedVideosFromRealmRx() {
+        PublishSubject<List<VideoItem>> subject = PublishSubject.create();
+
+        bookmarkedVideos = realm.where(VideoItem.class).equalTo("isBookmarked", true).findAll();
+        Logging.log(TAG, "in getBookmarkedVideosFromRealmRx.size = " + bookmarkedVideos.size());
+        subject.onNext(bookmarkedVideos);
+        bookmarkedVideos.addChangeListener(element -> {
+            Logging.log(TAG, "in getBookmarkedVideosFromRealmRx.onChange. size new results = " + element.size());
+            subject.onNext(element);
+        });
+
+        return subject;
+    }
+
     // FIXME: 15-5-2017 return type
-    public Object cacheVideos(List<VideoItem> videoItems){
+    public Object cacheVideos(List<VideoItem> videoItems) {
         // SAY YES TO THIS
-        Realm realm = null;
-        try { // I could use try-with-resources here
-            realm = Realm.getDefaultInstance();
-            realm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    realm.insertOrUpdate(videoItems);
-                }
-            });
-        } finally {
-            if(realm != null) {
-                realm.close();
-            }
-        }
+//        Realm realm = null;
+//        try { // I could use try-with-resources here
+//            realm = Realm.getDefaultInstance();
+            realm.executeTransaction(realm1 -> realm1.insertOrUpdate(videoItems));
+//        } finally {
+//            if (realm != null) {
+//                realm.close();
+//            }
+//        }
 
         return new Object();
     }
 
-
-    /**
-     * Removes id from bookmarked video id's
-     *
-     * @param videoId
-     */
-    public void removeBookmarkedVideo(String videoId) {
+    public void setBookmarkVideo(String videoId, boolean bookmark) {
+        Logging.log(TAG, "in addBookmarkedVideo for videoID: " + videoId);
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                RealmResults<BookmarkedVideoId> result = realm.
-                        where(BookmarkedVideoId.class).
-                        equalTo("videoId", videoId).
+                RealmResults<VideoItem> result = realm.
+                        where(VideoItem.class).
+                        equalTo("id", videoId).
                         findAll();
-                Logging.log(TAG, "Deleting videos with id: " + videoId + ", amountOfDeleted: " + result.size());
-                result.deleteAllFromRealm();
+
+                Logging.log(TAG, "executed finding video with id. Size = " + result.size());
+
+                for (int i = 0; i < result.size(); i++) {
+                    result.get(i).setBookmarked(bookmark);
+                }
             }
         });
     }
-
-    public void addBookmarkedVideo(@NonNull String videoId) {
-        // check if videoId has already been stored
-        RealmResults<BookmarkedVideoId> bookmarkedVideos = getBookmarkedVideoIDs();
-        for (BookmarkedVideoId video : bookmarkedVideos) {
-            if (video.getVideoId().equals(videoId)) {
-                Logging.log(TAG, "already bookmarked video with id: " + videoId);
-                // video already bookmarked: do nothing
-                return;
-            }
-        }
-
-        Logging.log(TAG, "bookmarkedVideoSize before adding: " + bookmarkedVideos.size());
-
-        // write object to Realm
-        realm.beginTransaction();
-        realm.createObject(BookmarkedVideoId.class, videoId);
-        realm.commitTransaction();
-        Logging.log(TAG, "storing bookmarked video with id: " + videoId);
-
-        Logging.log(TAG, "bookmarkedVideoSize before adding: " + getBookmarkedVideoIDs().size());
-
-
-    }
-
-
 }

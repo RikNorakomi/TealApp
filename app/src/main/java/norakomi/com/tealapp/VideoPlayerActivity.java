@@ -59,6 +59,8 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements
 
     }
 
+
+
     public void getVideos() {
         final Activity activity = this;
         DataManager.getInstance().getVideos(YOUTUBE_SEARCH_STRING, new IDataManagerCallback() {

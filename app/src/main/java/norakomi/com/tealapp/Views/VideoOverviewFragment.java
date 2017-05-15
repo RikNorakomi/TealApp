@@ -29,7 +29,6 @@ import norakomi.com.tealapp.data.DataManager;
 import norakomi.com.tealapp.data.model.VideoItem;
 import norakomi.com.tealapp.share.ShareVideoTask;
 
-import static android.content.ContentValues.TAG;
 import static norakomi.com.tealapp.Utils.Config.YOUTUBE_SEARCH_STRING;
 
 /**
@@ -43,12 +42,14 @@ import static norakomi.com.tealapp.Utils.Config.YOUTUBE_SEARCH_STRING;
 
 public class VideoOverviewFragment extends Fragment implements IRequestedActionListener {
 
+    private final String TAG = getClass().getSimpleName();
+
     private OverviewAdapter adapter;
     private ViewGroup rootView;
     private RecyclerView recycler;
     private ProgressBar progressSpinner;
     private SwipeRefreshLayout swipeRefresh;
-    private Disposable subscription;
+    private Disposable disposable;
 
     @Nullable
     @Override
@@ -84,13 +85,13 @@ public class VideoOverviewFragment extends Fragment implements IRequestedActionL
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread());
 
-        subscription = observable.subscribe(this::onResultGetVideos, this::onErrorGetVideos);
+        disposable = observable.subscribe(this::onResultGetVideos, this::onErrorGetVideos);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        subscription.dispose();
+        disposable.dispose();
     }
 
     private void onErrorGetVideos(Throwable throwable) {
