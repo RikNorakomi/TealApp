@@ -80,6 +80,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                            @NonNull VideoItem headerVideo) {
         mActionListener = listener;
         mHeaderVideo = headerVideo;
+        Logging.log(TAG, "in Constructor OverviewAdapter. mHeaderVideo = " + mHeaderVideo);
         mAddHeaderToRecycler = true;
     }
 
@@ -98,6 +99,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case HEADER:
+                Logging.log(TAG, "creating viewholder for Header. mHeaderVideo = " + mHeaderVideo);
                 View header = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_header, null);
                 return new ViewHolderHeader(header, mHeaderVideo);
             case VIDEO_ITEM:
@@ -191,7 +193,6 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             //inflating menu from xml resource
             popupMenu.inflate(R.menu.options_menu);
 
-            // todo to RxJava
             final boolean isVideoBookmarked = DataManager.getInstance().isVideoBookmarked(videoId);
             MenuItem bookmarkItem = popupMenu.getMenu().findItem(R.id.options_menu_bookmark);
             bookmarkItem.setTitle(isVideoBookmarked ? "Un-bookmark" : "Bookmark");
@@ -244,13 +245,8 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             mHeaderTitle = (TextView) headerView.findViewById(R.id.header_title_text);
             mIconsToolbar = (norakomi.com.tealapp.Views.Trash.VideoPlayerHeaderIconBar) headerView.findViewById(R.id.icons_toolbar);
 
-            // todo find more elegant wat; due to rx video can be null
-            if (video == null)
-                return;
-
             final DataManager dataManager = DataManager.getInstance();
             final String videoId = video.getId();
-
 
             mHeaderTitle.setText(video.getTitle());
             mSwitchCompat.setChecked(SharedPrefs.getInstance().isAutoplayEnabled());
@@ -273,8 +269,8 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             boolean isThumbedUp = dataManager.isVideoThumbedUp(videoId);
             boolean isThumbedDown = dataManager.isVideoThumbedDown(videoId);
             mIconsToolbar.setBookmarkEnabled(isBookmarked);
-            mIconsToolbar.setThumbedUpEnabled(isThumbedUp);
-            mIconsToolbar.setThumbedDownEnabled(isThumbedDown);
+            mIconsToolbar.setThumbUpEnabled(isThumbedUp);
+            mIconsToolbar.setThumbDownEnabled(isThumbedDown);
 
             // setup clickListeners
             mSwitchCompat.setOnClickListener(view -> mActionListener.onActionRequested(null, TOGGLE_AUTOPLAY));
@@ -284,8 +280,12 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 switch (clickedIcon) {
                     case BOOKMARK:
 //                        mActionListener.onActionRequested(null, BOOKMARK);
+                        Logging.log(TAG, "switchcase Bookmark/ toogle bookmarked video");
                         dataManager.toggleBookmarkedVideo(videoId);
-                        mIconsToolbar.setBookmarkEnabled(dataManager.isVideoBookmarked(videoId));
+
+                        boolean bookmarked = dataManager.isVideoBookmarked(videoId);
+                        Logging.log(TAG, "switchcase Bookmark/ setting bookmark enabled to: " + bookmarked);
+                        mIconsToolbar.setBookmarkEnabled(bookmarked);
                         break;
                     case COMMENTS:
                         mActionListener.onActionRequested(null, SHOW_COMMENTS);
@@ -294,22 +294,38 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         mActionListener.onActionRequested(videoId, SHARE);
                         break;
                     case THUMBS_DOWN:
-//                        mActionListener.onActionRequested(null, THUMB_DOWN);
+                        // TODO: 16-5-2017 find a better readable pattern here
                         dataManager.toggleThumbDownVideo(videoId);
-                        mIconsToolbar.setThumbDownEnabled(dataManager.isVideoThumbedDown(videoId));
+                        boolean thumbedDown = dataManager.isVideoThumbedDown(videoId);
+                        mIconsToolbar.setThumbDownEnabled(thumbedDown);
+                        if (thumbedDown) {
+                            // check if thumbed up was enabled and if so disable it
+                            boolean thumbedUp = dataManager.isVideoThumbedUp(videoId);
+                            if (thumbedUp) {
+                                dataManager.toggleThumbUpVideo(videoId);
+                                mIconsToolbar.setThumbUpEnabled(false);
+                            }
+                        }
                         break;
                     case THUMBS_UP:
-//                        mActionListener.onActionRequested(null, THUMB_UP);
+                        // TODO: 16-5-2017 find a better readable pattern here
                         dataManager.toggleThumbUpVideo(videoId);
-                        mIconsToolbar.setThumbUpEnabled(dataManager.isVideoThumbedUp(videoId));
+                        boolean thumbedUp = dataManager.isVideoThumbedUp(videoId);
+                        mIconsToolbar.setThumbUpEnabled(thumbedUp);
+                        if (thumbedUp) {
+                            // check if thumbed up was enabled and if so disable it
+                            boolean thumbDown = dataManager.isVideoThumbedDown(videoId);
+                            if (thumbDown) {
+                                dataManager.toggleThumbDownVideo(videoId);
+                                mIconsToolbar.setThumbDownEnabled(false);
+                            }
+                        }
                         break;
                     default:
                         String message = "Unable to determine valid switch case";
                         Logging.logError(TAG, message, new IllegalStateException(message));
                 }
             });
-
-
         }
     }
 

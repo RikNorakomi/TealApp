@@ -82,8 +82,5 @@ public class BookmarkFragment extends Fragment {
     private void onErrorGetBookmarkedVideos(Throwable throwable) {
         String message = "onErrorGetBookmarkedVideos";
         Logging.logError(TAG, message, throwable);
-
     }
-
-
 }

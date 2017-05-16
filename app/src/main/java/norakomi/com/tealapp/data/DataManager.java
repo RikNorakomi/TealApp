@@ -127,45 +127,43 @@ public class DataManager {
     }
 
     /**
-     * This method queries the cached search query results for requested id
-     *
      * @param videoId
-     * @return video item from cache or null if video id not found
+     * @return video item from realm
      */
     @Nullable
     public VideoItem getVideoFromId(String videoId) {
-        for (VideoItem video : cachedResults) {
-            if (video.getId().equals(videoId)) {
-                return video;
-            }
-        }
-
-        return null;
+        return mRealmController.getVideosFromId(videoId);
     }
-
-    public void toggleBookmarkedVideo(String videoId) {
-        boolean isBookmarked = mRealmController.isVideoBookmarked(videoId);
-        mRealmController.setBookmarkVideo(videoId, !isBookmarked);
-           }
 
     public boolean isVideoBookmarked(@NonNull String videoId) {
         VideoItem videoItem = RealmController.getInstance().getVideosFromId(videoId);
         return videoItem.isBookmarked();
     }
 
-    public boolean isVideoThumbedUp(String videoId) {
-        return false;
+    public boolean isVideoThumbedUp(@NonNull String videoId) {
+        VideoItem videoItem = RealmController.getInstance().getVideosFromId(videoId);
+        return videoItem.isThumbedUp();
     }
 
-    public boolean isVideoThumbedDown(String videoId) {
-        return false;
+    public boolean isVideoThumbedDown(@NonNull String videoId) {
+        VideoItem videoItem = RealmController.getInstance().getVideosFromId(videoId);
+        return videoItem.isThumbedDown();
     }
 
-    public void toggleThumbDownVideo(String videoId) {
-
+    public void toggleBookmarkedVideo(String videoId) {
+        boolean isBookmarked = mRealmController.isVideoBookmarked(videoId);
+        Logging.log(TAG, "in toggleBookmarkedVideo for id:" + videoId + " ,bookmarked=" + isBookmarked);
+        mRealmController.setBookmarkVideo(videoId, !isBookmarked);
     }
 
-    public void toggleThumbUpVideo(String videoId) {
+    public void toggleThumbDownVideo(@NonNull String videoId) {
+        boolean isThumbedDown = mRealmController.isThumbedDown(videoId);
+        mRealmController.setThumbedDown(videoId, !isThumbedDown);
+    }
+
+    public void toggleThumbUpVideo(@NonNull String videoId) {
+        boolean isThumbedDown = mRealmController.isThumbedUp(videoId);
+        mRealmController.setThumbedUp(videoId, !isThumbedDown);
 
     }
 }

@@ -78,7 +78,10 @@ public class VideoOverviewFragment extends Fragment implements IRequestedActionL
 
     private void getVideos() {
         showProgressSpinner(true);
+        setupVideoSubscription();
+    }
 
+    private void setupVideoSubscription() {
         // Using Rx here because we could have one result for cached items and one result for api call
         Observable<List<VideoItem>> observable =
                 DataManager.getInstance().getVideosRx(YOUTUBE_SEARCH_STRING)
@@ -86,6 +89,12 @@ public class VideoOverviewFragment extends Fragment implements IRequestedActionL
                         .observeOn(AndroidSchedulers.mainThread());
 
         disposable = observable.subscribe(this::onResultGetVideos, this::onErrorGetVideos);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        setupVideoSubscription();
     }
 
     @Override

@@ -50,7 +50,6 @@ public class VideoPlayerHeaderIconBar extends LinearLayout
     }
 
 
-
     public enum Icons {
         COMMENTS(R.id.comments_icon, R.id.comments_text),
         THUMBS_UP(R.id.thumb_up_icon, R.id.thumb_up_text),
@@ -102,12 +101,7 @@ public class VideoPlayerHeaderIconBar extends LinearLayout
         mCommentsIconContainer.setOnClickListener(view -> handleClick(Icons.COMMENTS));
         mThumbsDownIconContainer.setOnClickListener(view -> handleClick(Icons.THUMBS_DOWN));
         mThumbsUpIconContainer.setOnClickListener(view -> handleClick(Icons.THUMBS_UP));
-        mBookmarkIconContainer.setOnClickListener(view -> {
-            handleClick(Icons.BOOKMARK);
-            bookmarkEnabled = !bookmarkEnabled;
-            setBookmarkEnabled(bookmarkEnabled);
-
-        });
+        mBookmarkIconContainer.setOnClickListener(view -> handleClick(Icons.BOOKMARK));
         mShareIconContainer.setOnClickListener(view -> handleClick(Icons.SHARE));
     }
 
@@ -124,20 +118,21 @@ public class VideoPlayerHeaderIconBar extends LinearLayout
     public void setIconClickListener(IconClickListener clickListener) {
         // create weak reference to prevent potential memory leaks
         this.clickListener = clickListener;
-        Logging.log(TAG , "IconClickLIstener registered!");
+        Logging.log(TAG, "IconClickLIstener registered!");
     }
 
     public void setBookmarkEnabled(boolean enabled) {
+        Logging.log(TAG, "setting bookmarled color on icon and text to: " + enabled);
         setColorOnIcon(R.id.bookmark_icon, enabled);
         setColorOnText(R.id.bookmark_text, enabled);
     }
 
-    public void setThumbedUpEnabled(boolean enabled) {
+    public void setThumbUpEnabled(boolean enabled) {
         setColorOnIcon(R.id.thumb_up_icon, enabled);
         setColorOnText(R.id.thumb_up_text, enabled);
     }
 
-    public void setThumbedDownEnabled(boolean enabled) {
+    public void setThumbDownEnabled(boolean enabled) {
         setColorOnIcon(R.id.thumb_down_icon, enabled);
         setColorOnText(R.id.thumb_down_text, enabled);
     }
@@ -156,15 +151,6 @@ public class VideoPlayerHeaderIconBar extends LinearLayout
         int color = getResources().getColor(enabled ? R.color.fillColorIconsHeaderSelected : R.color.fillColorIconsHeaderUnselected);
         ((TextView) findViewById(TextViewResourceId)).setTextColor(color);
     }
-
-    public void setThumbUpEnabled(boolean enabled) {
-
-    }
-
-    public void setThumbDownEnabled(boolean enabled) {
-
-    }
-
 
     //    @Override
     public void onClick(View view) {

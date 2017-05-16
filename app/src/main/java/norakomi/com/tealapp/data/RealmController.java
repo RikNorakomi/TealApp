@@ -43,11 +43,6 @@ class RealmController {
         return realm.where(VideoItem.class).equalTo("id", videoId).findFirst();
     }
 
-    public boolean isVideoBookmarked(String videoId) {
-        VideoItem video = realm.where(VideoItem.class).equalTo("id", videoId).findFirst();
-        return video.isBookmarked();
-    }
-
 
     public Observable<List<VideoItem>> getBookmarkedVideosFromRealmRx() {
         PublishSubject<List<VideoItem>> subject = PublishSubject.create();
@@ -69,7 +64,7 @@ class RealmController {
 //        Realm realm = null;
 //        try { // I could use try-with-resources here
 //            realm = Realm.getDefaultInstance();
-            realm.executeTransaction(realm1 -> realm1.insertOrUpdate(videoItems));
+        realm.executeTransaction(realm1 -> realm1.insertOrUpdate(videoItems));
 //        } finally {
 //            if (realm != null) {
 //                realm.close();
@@ -89,12 +84,71 @@ class RealmController {
                         equalTo("id", videoId).
                         findAll();
 
-                Logging.log(TAG, "executed finding video with id. Size = " + result.size());
 
                 for (int i = 0; i < result.size(); i++) {
                     result.get(i).setBookmarked(bookmark);
+                    Logging.log(TAG, "Setting video with id:" + videoId + " to bookmarked = " + bookmark);
                 }
             }
         });
     }
+
+    public void setThumbedDown(String videoId, boolean thumbedDown) {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<VideoItem> result = realm.
+                        where(VideoItem.class).
+                        equalTo("id", videoId).
+                        findAll();
+
+
+                // Setting thumbed down value on video with id
+                // If thumbed down is set to true, we have to check if thumbed up
+                // current value is true as well and if so change to false
+                for (int i = 0; i < result.size(); i++) {
+                    result.get(i).setThumbedDown(thumbedDown);
+                    Logging.log(TAG, "Setting video with id:" + videoId + " to thumbedDown = " + thumbedDown);
+                }
+            }
+        });
+    }
+
+    public void setThumbedUp(String videoId, boolean thumbedUp) {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<VideoItem> result = realm.
+                        where(VideoItem.class).
+                        equalTo("id", videoId).
+                        findAll();
+
+
+                // Setting thumbed down value on video with id
+                // If thumbed down is set to true, we have to check if thumbed up
+                // current value is true as well and if so change to false
+                for (int i = 0; i < result.size(); i++) {
+                    result.get(i).setThumbedUp(thumbedUp);
+                    Logging.log(TAG, "Setting video with id:" + videoId + " to thumbedUp = " + thumbedUp);
+                }
+            }
+        });
+    }
+
+    public boolean isVideoBookmarked(String videoId) {
+        VideoItem video = realm.where(VideoItem.class).equalTo("id", videoId).findFirst();
+        return video.isBookmarked();
+    }
+
+    public boolean isThumbedDown(String videoId) {
+        VideoItem video = realm.where(VideoItem.class).equalTo("id", videoId).findFirst();
+        return video.isThumbedDown();
+    }
+
+    public boolean isThumbedUp(String videoId) {
+        VideoItem video = realm.where(VideoItem.class).equalTo("id", videoId).findFirst();
+        return video.isThumbedUp();
+    }
+
+
 }
