@@ -1,4 +1,4 @@
-package norakomi.com.tealapp.Utils;
+package norakomi.com.tealapp.Utils.Rx;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;

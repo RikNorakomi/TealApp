@@ -9,9 +9,17 @@ https://www.youtube.com/watch?v=QT7XD1hifkU
 
 https://blog.mindorks.com/migrating-from-rxjava1-to-rxjava2-5dac0a94b4aa
 http://stackoverflow.com/questions/41707043/rxjava-implement-an-observable-for-an-object-update
+http://stackoverflow.com/questions/38504037/rxjava-observe-data-that-might-always-change
+
+RxLifeCycle trello library:
+https://github.com/trello/RxLifecycle/tree/2.x
+May 2017 Meetup: Advanced RxJava and Conductor:
+https://www.youtube.com/watch?v=0XSf7sX2rCQ&t=2667s
+
 
 Design inspiration:
 https://material.uplabs.com/posts/bitshares-munich-carbon-section-switch-interacti
+https://www.uplabs.com/collections/video-portal-inspiration
 
 Design Tools:
 http://principleformac.com/

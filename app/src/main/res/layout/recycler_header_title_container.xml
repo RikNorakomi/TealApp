@@ -27,11 +27,11 @@
         android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@+id/header_expand_collapse_icon"
         android:maxLines="2"
-        android:text="Test text: Inner worlds, outer worlds - part 1 - akasha"
         android:textColor="@color/textColorTitle"
         android:textSize="@dimen/text_size_title"/>
 
     <TextView
+        android:id="@+id/header_number_of_views"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/header_title_text"

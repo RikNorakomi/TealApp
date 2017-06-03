@@ -1,7 +1,6 @@
 <resources>
 
     <!-- https://material.io/guidelines/style/typography.html#typography-typeface -->
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
 
@@ -18,6 +17,10 @@
         <item name="colorControlActivated">@color/switchButtonHighlighted</item>
 
 
+    </style>
+
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
 
     <style name="recycler_header_icons_toolbar_style">

@@ -24,4 +24,7 @@
     <color name="fillColorIconsNavigationBarSelected">#ffffffff</color>
     <color name="fillColorIconsNavigationBarUnselected">#33ffffff</color>
 
+
+    <color name="splashScreenColor">@color/colorPrimary</color>
+
 </resources>

@@ -14,9 +14,9 @@ import android.view.View;
  * www.norakomi.com
  */
 
-public class UiUtil {
+public class UiNotification {
 
-    private UiUtil() {}
+    private UiNotification() {}
 
     /**
      * https://developer.android.com/training/snackbar/action.html
@@ -29,6 +29,10 @@ public class UiUtil {
 
     public static void showSnackbarLong(Activity activity, String s) {
         View view = activity.findViewById(android.R.id.content); // gets rootview
+        Snackbar.make(view, s, Snackbar.LENGTH_LONG).show();
+    }
+
+    public static void showSnackbarLong(View view, String s) {
         Snackbar.make(view, s, Snackbar.LENGTH_LONG).show();
     }
 }

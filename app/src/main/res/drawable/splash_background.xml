@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@color/splashScreenColor"/>
+
+    <item>
+    </item>
+    <item android:id="@+id/splash_screen_logo">
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/teal_swan_300px"/>
+    </item>
+
+</layer-list>

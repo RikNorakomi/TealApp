@@ -16,10 +16,6 @@
 
     </norakomi.com.tealapp.Views.Trash.VideoPlayerHeaderIconBar>
 
-    <!--<include-->
-        <!--android:id="@+id/icons_toolbar"-->
-        <!--layout="@layout/recycler_header_icons_toolbar"/>-->
-
     <!-- Divider line -->
     <View
         android:layout_width="match_parent"

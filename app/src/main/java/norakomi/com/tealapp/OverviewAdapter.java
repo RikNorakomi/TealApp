@@ -23,6 +23,7 @@ import java.util.List;
 import norakomi.com.tealapp.Interfaces.IRequestedActionListener;
 import norakomi.com.tealapp.Utils.Logging;
 import norakomi.com.tealapp.Utils.SharedPrefs;
+import norakomi.com.tealapp.Utils.UiNotification;
 import norakomi.com.tealapp.Views.Trash.VideoPlayerHeaderIconBar;
 import norakomi.com.tealapp.data.DataManager;
 import norakomi.com.tealapp.data.model.VideoItem;
@@ -212,7 +213,6 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         break;
                     case R.id.options_menu_bookmark:
                         mActionListener.onActionRequested(videoId, BOOKMARK);
-//                        isVideoBookmarked = !isVideoBookmarked;
                         bookmarkItem.setTitle(!isVideoBookmarked ? "Un-bookmark" : "Bookmark");
                         break;
                     default:
@@ -279,13 +279,16 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             mIconsToolbar.setIconClickListener(clickedIcon -> {
                 switch (clickedIcon) {
                     case BOOKMARK:
-//                        mActionListener.onActionRequested(null, BOOKMARK);
+//                        mActionListener.onActionRequested(videoId, BOOKMARK);
                         Logging.log(TAG, "switchcase Bookmark/ toogle bookmarked video");
                         dataManager.toggleBookmarkedVideo(videoId);
 
                         boolean bookmarked = dataManager.isVideoBookmarked(videoId);
                         Logging.log(TAG, "switchcase Bookmark/ setting bookmark enabled to: " + bookmarked);
                         mIconsToolbar.setBookmarkEnabled(bookmarked);
+
+                        String snackBarText = "You " + (!bookmarked ? "un-" : "") + "bookmarked this video";
+                        UiNotification.showSnackbarLong(headerView, snackBarText);
                         break;
                     case COMMENTS:
                         mActionListener.onActionRequested(null, SHOW_COMMENTS);
@@ -306,6 +309,9 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                 mIconsToolbar.setThumbUpEnabled(false);
                             }
                         }
+
+                        snackBarText = "You " + (thumbedDown ? "disliked" : "removed your dislike from") + " this video";
+                        UiNotification.showSnackbarLong(headerView, snackBarText);
                         break;
                     case THUMBS_UP:
                         // TODO: 16-5-2017 find a better readable pattern here
@@ -320,6 +326,9 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                 mIconsToolbar.setThumbDownEnabled(false);
                             }
                         }
+
+                        snackBarText = "You " + (thumbedUp ? "liked" : "removed your like from") + " this video";
+                        UiNotification.showSnackbarLong(headerView, snackBarText);
                         break;
                     default:
                         String message = "Unable to determine valid switch case";

@@ -24,6 +24,7 @@ import norakomi.com.tealapp.OverviewAdapter;
 import norakomi.com.tealapp.R;
 import norakomi.com.tealapp.Utils.App;
 import norakomi.com.tealapp.Utils.Logging;
+import norakomi.com.tealapp.Utils.UiNotification;
 import norakomi.com.tealapp.VideoPlayerActivity;
 import norakomi.com.tealapp.data.DataManager;
 import norakomi.com.tealapp.data.model.VideoItem;
@@ -106,6 +107,7 @@ public class VideoOverviewFragment extends Fragment implements IRequestedActionL
     private void onErrorGetVideos(Throwable throwable) {
         String message = "Error getting videos";
         Logging.logError(TAG, message, throwable);
+        UiNotification.showSnackbarLong(getActivity(), getString(R.string.overview_error_loading_videos));
     }
 
     private void onResultGetVideos(List<VideoItem> videoItems) {
@@ -143,6 +145,11 @@ public class VideoOverviewFragment extends Fragment implements IRequestedActionL
                 break;
             case BOOKMARK:
                 DataManager.getInstance().toggleBookmarkedVideo(videoId);
+                boolean bookmarked =  DataManager.getInstance().isVideoBookmarked(videoId);
+                Logging.log(TAG, "switchcase Bookmark/ setting bookmark enabled to: " + bookmarked);
+
+                String snackBarText = "You " + (!bookmarked ? "un-" : "") + "bookmarked this video";
+                UiNotification.showSnackbarLong(getActivity(), snackBarText);
                 break;
             default:
                 Logging.logError(TAG, "Unable to handle requested action",

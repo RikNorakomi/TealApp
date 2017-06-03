@@ -1,6 +1,5 @@
 package norakomi.com.tealapp;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,14 +12,17 @@ import com.google.android.youtube.player.YouTubePlayerView;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import norakomi.com.tealapp.Interfaces.IRequestedActionListener;
 import norakomi.com.tealapp.Utils.App;
 import norakomi.com.tealapp.Utils.Config;
 import norakomi.com.tealapp.Utils.Logging;
 import norakomi.com.tealapp.Utils.SharedPrefs;
-import norakomi.com.tealapp.Utils.UiUtil;
+import norakomi.com.tealapp.Utils.UiNotification;
 import norakomi.com.tealapp.data.DataManager;
-import norakomi.com.tealapp.data.IDataManagerCallback;
 import norakomi.com.tealapp.data.model.VideoItem;
 import norakomi.com.tealapp.share.ShareVideoTask;
 
@@ -34,6 +36,7 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements
 
     public static final String VIDEO_ID = "VIDEO_ID";
     private OverviewAdapter adapter;
+    private Disposable disposable;
     private String mVideoId;
 
     @Override
@@ -45,7 +48,6 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements
         Logging.log(TAG, "videoID to play: " + mVideoId);
 
         setupViews();
-        getVideos();
     }
 
     private void setupViews() {
@@ -55,25 +57,30 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements
         adapter = new OverviewAdapter(this, DataManager.getInstance().getVideoFromId(mVideoId));
         RecyclerView recycler = (RecyclerView) findViewById(R.id.recycler_player_activity);
         recycler.setAdapter(adapter);
-
-
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Using Rx here because we could have one result for cached items and one result for api call
+        Observable<List<VideoItem>> observable =
+                DataManager.getInstance().getVideosRx(YOUTUBE_SEARCH_STRING)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread());
 
+        disposable = observable.subscribe(videoItems -> adapter.setRecyclerVideos(videoItems), this::onErrorGetVideos);
+    }
 
-    public void getVideos() {
-        final Activity activity = this;
-        DataManager.getInstance().getVideos(YOUTUBE_SEARCH_STRING, new IDataManagerCallback() {
-            @Override
-            public void onResult(final List<VideoItem> result) {
-                adapter.setRecyclerVideos(result);
-            }
+    private void onErrorGetVideos(Throwable throwable) {
+        String message = "Error getting videos";
+        Logging.logError(TAG, message, throwable);
+        UiNotification.showSnackbarLong(this, getString(R.string.overview_error_loading_videos));
+    }
 
-            @Override
-            public void onError(Exception e) {
-                UiUtil.showSnackbarLong(activity, getString(R.string.overview_error_loading_videos));
-            }
-        });
+    @Override
+    protected void onPause() {
+        super.onPause();
+        disposable.dispose();
     }
 
     @Override
@@ -96,7 +103,7 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements
 
         switch (requestedAction) {
             case TOGGLE_SHOW_DESCRIPTION:
-                Logging.log(TAG, "show desciption clicked");
+                Logging.log(TAG, "show description clicked");
                 break;
             case SHOW_COMMENTS:
                 Logging.log(TAG, "show comments clicked");

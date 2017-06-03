@@ -4,3 +4,13 @@ https://developers.google.com/youtube/v3/docs/search
 https://developers.google.com/resources/api-libraries/documentation/youtube/v3/java/latest/
 
 https://developers.google.com/apis-explorer/#p/youtube/v3/
+
+Search result size issues:
+Getting above 500 max search results:
+http://stackoverflow.com/questions/27500231/how-can-get-all-results-from-youtube-api-search-api-response
+Apperently as of api v3 you're unable to use pusblisshedBefore/after to refine search queries??
+http://stackoverflow.com/questions/23255957/what-is-the-maximum-results-returned-for-youtube-data-api-v3-call
+"... and you easily get more than 100 results... https://www.googleapis.com/youtube/v3/search?q=football&part=id&key=YOUR_DEVELOPER_KEY&max-results=150"
+http://stackoverflow.com/questions/16227540/need-help-to-get-more-than-100-results-using-youtube-search-api
+"... append the parameter &start-index=51 so that you'd get 50 more results, numbered 51-100. You can continue on like this up to 1000 results."
+http://stackoverflow.com/questions/17214915/max-results-value-is-too-high-youtube-api

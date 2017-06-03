@@ -51,6 +51,7 @@ public class DataManager {
      *                             {@link norakomi.com.tealapp.Utils.Config} holds Constant for this string
      * @param iDataManagerCallback callback interface
      */
+    @Deprecated
     public void getVideos(String searchQuery, IDataManagerCallback iDataManagerCallback) {
         if (cachedQueries.containsKey(searchQuery)) {
             App.log(TAG, "getting video results from cache");
