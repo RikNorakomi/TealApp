@@ -23,3 +23,6 @@ https://www.uplabs.com/collections/video-portal-inspiration
 
 Design Tools:
 http://principleformac.com/
+
+Restart App Programatically:
+https://stackoverflow.com/questions/15564614/how-to-restart-an-android-application-programmatically

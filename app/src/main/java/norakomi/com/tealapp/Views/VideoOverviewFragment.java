@@ -30,8 +30,6 @@ import norakomi.com.tealapp.data.DataManager;
 import norakomi.com.tealapp.data.model.VideoItem;
 import norakomi.com.tealapp.share.ShareVideoTask;
 
-import static norakomi.com.tealapp.Utils.Config.YOUTUBE_SEARCH_STRING;
-
 /**
  * Created by Rik van Velzen, Norakomi.com, on 10-5-2017.
  * <p>
@@ -85,7 +83,7 @@ public class VideoOverviewFragment extends Fragment implements IRequestedActionL
     private void setupVideoSubscription() {
         // Using Rx here because we could have one result for cached items and one result for api call
         Observable<List<VideoItem>> observable =
-                DataManager.getInstance().getVideosRx(YOUTUBE_SEARCH_STRING)
+                DataManager.getInstance().getVideosRx()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread());
 

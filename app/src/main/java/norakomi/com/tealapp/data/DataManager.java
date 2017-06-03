@@ -13,6 +13,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import norakomi.com.tealapp.Utils.App;
+import norakomi.com.tealapp.Utils.Config;
 import norakomi.com.tealapp.Utils.Logging;
 import norakomi.com.tealapp.data.model.VideoItem;
 import norakomi.com.tealapp.data.service.YoutubeService;
@@ -84,11 +85,11 @@ public class DataManager {
      * Returns an observable of List<VideoItem> for a youtube video query
      * Also check to see if realm has any videos cached and if so merge the result with the observable
      */
-    public Observable<List<VideoItem>> getVideosRx(String searchQuery) {
+    public Observable<List<VideoItem>> getVideosRx() {
         Observable<List<VideoItem>> observable =
                 Observable.fromCallable(() -> {
                     // create youtube service and perform query
-                    return new YoutubeService().search(searchQuery);
+                    return new YoutubeService().search(Config.YOUTUBE_SEARCH_STRING);
                 })
                         .subscribeOn(Schedulers.io())
                         // Write result to Realm on Computation scheduler to cache data
