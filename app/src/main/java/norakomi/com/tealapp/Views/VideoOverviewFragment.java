@@ -53,8 +53,7 @@ public class VideoOverviewFragment extends Fragment implements IRequestedActionL
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = (ViewGroup) inflater.inflate(
-                R.layout.fragment_video_overview, container, false);
+        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_video_overview, container, false);
 
         setupViews(rootView);
         getVideos();
@@ -84,8 +83,7 @@ public class VideoOverviewFragment extends Fragment implements IRequestedActionL
         // Using Rx here because we could have one result for cached items and one result for api call
         Observable<List<VideoItem>> observable =
                 DataManager.getInstance().getVideosRx()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread());
+                      ;
 
         disposable = observable.subscribe(this::onResultGetVideos, this::onErrorGetVideos);
     }
@@ -143,7 +141,7 @@ public class VideoOverviewFragment extends Fragment implements IRequestedActionL
                 break;
             case BOOKMARK:
                 DataManager.getInstance().toggleBookmarkedVideo(videoId);
-                boolean bookmarked =  DataManager.getInstance().isVideoBookmarked(videoId);
+                boolean bookmarked = DataManager.getInstance().isVideoBookmarked(videoId);
                 Logging.log(TAG, "switchcase Bookmark/ setting bookmark enabled to: " + bookmarked);
 
                 String snackBarText = "You " + (!bookmarked ? "un-" : "") + "bookmarked this video";

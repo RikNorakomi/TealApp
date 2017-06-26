@@ -23,6 +23,9 @@ allprojects {
     repositories {
         jcenter()
 
+        // for android architecture components
+        maven { url 'https://maven.google.com' }
+
         // for material search view
         maven { url 'https://jitpack.io' }
     }

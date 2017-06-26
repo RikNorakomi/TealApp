@@ -12,12 +12,6 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-
-//        jackOptions {
-//            // Issues Realm with Jack:
-//            // http://stackoverflow.com/questions/41153879/realm-android-realmtransformer-doesnt-seem-to-be-applied
-//            enabled true
-//        }
     }
 
     compileOptions {
@@ -39,7 +33,6 @@ ext {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-//    testCompile 'junit:junit:4.12'
 
     // support Lib dependencies:
     compile "com.android.support:appcompat-v7:$supportLibraryVersion"
@@ -68,4 +61,9 @@ dependencies {
 
     // https://github.com/trello/RxLifecycle/tree/2.x
 //    compile 'com.trello.rxlifecycle2:rxlifecycle:2.0.1'
+
+    // arch components
+    compile "android.arch.lifecycle:runtime:1.0.0-alpha3"
+    compile "android.arch.lifecycle:extensions:1.0.0-alpha3"
+    annotationProcessor "android.arch.lifecycle:compiler:1.0.0-alpha3"
 }
