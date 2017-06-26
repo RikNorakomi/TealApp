@@ -19,5 +19,6 @@
     <dimen name="text_size_icon_active">14sp</dimen>
 
     <dimen name="navigation_bar_height">48dp</dimen>
+    <dimen name="search_view_inset">0dp</dimen>
 
 </resources>

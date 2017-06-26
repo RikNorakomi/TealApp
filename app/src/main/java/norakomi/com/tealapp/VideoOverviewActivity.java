@@ -68,7 +68,6 @@ public class VideoOverviewActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     public void onBackPressed() {
         long timestamp = new Date().getTime();

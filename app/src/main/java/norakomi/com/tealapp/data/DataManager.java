@@ -90,23 +90,23 @@ public class DataManager {
                 Observable.fromCallable(() -> {
                     // create youtube service and perform query
                     return new YoutubeService().search(Config.YOUTUBE_SEARCH_STRING);
-                })
-                        .subscribeOn(Schedulers.io())
+                });
+//                        .subscribeOn(Schedulers.io())
                         // Write result to Realm on Computation scheduler to cache data
-                        .observeOn(Schedulers.computation())
-                        .map(this::writeToRealm) // FIXME: 15-5-2017
-                        // Read results in Android Main Thread (UI)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .map(this::readFromRealm); // FIXME: 15-5-2017
+//                        .observeOn(Schedulers.computation())
+//                        .map(this::writeToRealm) // FIXME: 15-5-2017
+//                         Read results in Android Main Thread (UI)
+//                        .observeOn(AndroidSchedulers.mainThread())
+//                        .map(this::readFromRealm); // FIXME: 15-5-2017
 
-        List<VideoItem> cachedVideoItems = mRealmController.getVideosFromRealm();
-        if (cachedVideoItems != null) {
-            Logging.log(TAG, "Found cached videoItems in realm. Merging observable");
-            // Merge with the observable from youtube api call
-            observable = observable.mergeWith(Observable.just(cachedVideoItems));
-        } else {
-            Logging.log(TAG, "No cached videoItems found in realm. Not Merging observable");
-        }
+//        List<VideoItem> cachedVideoItems = mRealmController.getVideosFromRealm();
+//        if (cachedVideoItems != null) {
+//            Logging.log(TAG, "Found cached videoItems in realm. Merging observable");
+//            // Merge with the observable from youtube api call
+//            observable = observable.mergeWith(Observable.just(cachedVideoItems));
+//        } else {
+//            Logging.log(TAG, "No cached videoItems found in realm. Not Merging observable");
+//        }
 
         return observable;
     }
