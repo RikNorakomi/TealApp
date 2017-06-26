@@ -19,9 +19,7 @@
 
     </style>
 
-    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash_background</item>
-    </style>
+ <!--style-->
 
     <style name="recycler_header_icons_toolbar_style">
         <!-- https://material.io/guidelines/components/bottom-navigation.html#bottom-navigation-specs -->
