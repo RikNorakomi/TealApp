@@ -116,16 +116,6 @@ public class DataManager {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-
-    private List<VideoItem> readFromRealm(Object o) {
-        return mRealmController.getVideosFromRealm();
-    }
-
-    // FIXME: 15-5-2017
-    private Object writeToRealm(List<VideoItem> videoItems) {
-        return mRealmController.cacheVideos(videoItems);
-    }
-
     /**
      * @param videoId
      * @return video item from realm

@@ -20,10 +20,9 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         //Remove title bar
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_splash);
+        setContentView(R.layout.activity_splash_screen);
 
         int delayMillis = 1000;
         new Handler().postDelayed(() -> {
@@ -32,9 +31,5 @@ public class SplashScreen extends AppCompatActivity {
             // close splash activity
             finish();
         }, delayMillis);
-
-
     }
-
-
 }

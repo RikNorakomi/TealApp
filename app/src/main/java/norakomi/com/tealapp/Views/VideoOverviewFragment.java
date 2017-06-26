@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -16,9 +17,7 @@ import android.widget.ProgressBar;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import norakomi.com.tealapp.Interfaces.IRequestedActionListener;
 import norakomi.com.tealapp.OverviewAdapter;
 import norakomi.com.tealapp.R;
@@ -47,6 +46,7 @@ public class VideoOverviewFragment extends Fragment implements IRequestedActionL
     private ViewGroup rootView;
     private RecyclerView recycler;
     private ProgressBar progressSpinner;
+    private FloatingActionButton fab;
     private SwipeRefreshLayout swipeRefresh;
     private Disposable disposable;
 
@@ -66,12 +66,18 @@ public class VideoOverviewFragment extends Fragment implements IRequestedActionL
         recycler = (RecyclerView) rootView.findViewById(R.id.overview_recycler_video);
         progressSpinner = (ProgressBar) rootView.findViewById(R.id.overview_progress_loader);
         swipeRefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.overview_swiperefresh);
+        fab = (FloatingActionButton) rootView.findViewById(R.id.overview_fab);
 
         recycler.setAdapter(adapter);
+        fab.setOnClickListener(view -> onFabClicked());
         swipeRefresh.setOnRefreshListener(() -> {
             getVideos();
             swipeRefresh.setRefreshing(false);
         });
+    }
+
+    private void onFabClicked() {
+        App.log(TAG, "on fab clicked");
     }
 
     private void getVideos() {
