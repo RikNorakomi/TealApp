@@ -24,5 +24,19 @@ https://www.uplabs.com/collections/video-portal-inspiration
 Design Tools:
 http://principleformac.com/
 
-Restart App Programatically:
+Restart App Programmatically:
 https://stackoverflow.com/questions/15564614/how-to-restart-an-android-application-programmatically
+
+Creating multiple app modules:
+https://stackoverflow.com/questions/41632599/dis-advantage-of-having-multiple-modules-in-an-android-studio-project
+
+Search Design/Input:
+http://babich.biz/best-practices-for-search-results/
+https://uxplanet.org/mobile-ux-design-user-friendly-search-51e5f78f5a1e
+
+Fonts recommendation by Nick Babich:
+https://fonts.google.com/specimen/Merriweather
+
+Nick Babich?:
+https://medium.com/@101/
+http://babich.biz/

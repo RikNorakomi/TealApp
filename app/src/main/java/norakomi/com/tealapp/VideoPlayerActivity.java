@@ -26,8 +26,6 @@ import norakomi.com.tealapp.data.DataManager;
 import norakomi.com.tealapp.data.model.VideoItem;
 import norakomi.com.tealapp.share.ShareVideoTask;
 
-import static norakomi.com.tealapp.Utils.Config.YOUTUBE_SEARCH_STRING;
-
 public class VideoPlayerActivity extends YouTubeBaseActivity implements
         YouTubePlayer.OnInitializedListener,
         IRequestedActionListener {
@@ -64,7 +62,7 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements
         super.onResume();
         // Using Rx here because we could have one result for cached items and one result for api call
         Observable<List<VideoItem>> observable =
-                DataManager.getInstance().getVideosRx(YOUTUBE_SEARCH_STRING)
+                DataManager.getInstance().getVideosRx()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread());
 
